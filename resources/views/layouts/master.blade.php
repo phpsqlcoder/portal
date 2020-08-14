@@ -9,6 +9,7 @@
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="Preview page of Metronic Admin Theme #2 for blank page layout" name="description" />
         <meta content="" name="author" />
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
         <link href="{{ asset('/assets/google.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('/assets/global/plugins/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css" />
@@ -16,7 +17,8 @@
         <link href="{{ asset('/assets/global/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
         <link href="{{ asset('/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css') }}" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
-		@yield('pagecss')
+        @yield('pagecss')
+        <link rel="stylesheet" href="{{ asset(mix('css/style.css')) }}">
         <!-- BEGIN THEME GLOBAL STYLES -->
         <link href="{{ asset('/assets/global/css/components.min.css') }}" rel="stylesheet" id="style_components" type="text/css" />
         <link href="{{ asset('/assets/global/css/plugins.min.css') }}" rel="stylesheet" type="text/css" />
@@ -47,7 +49,9 @@
                     <h1 class="page-title">@yield('page-title')</h1>
                     
                                        
-                    @yield('content')
+                    <div id="app">
+                        @yield('content')
+                    </div>
                 </div>
                 
             </div>               
@@ -56,6 +60,7 @@
         
         <div class="page-footer">          
             @include('layouts.footer')
+            <script src="{{ asset('js/app.js') }}"></script>
             <!-- BEGIN CORE PLUGINS -->
             <script src="{{ asset('/assets/global/plugins/jquery.min.js') }}" type="text/javascript"></script>
             <script src="{{ asset('/assets/global/plugins/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>

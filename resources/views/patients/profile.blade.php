@@ -12,8 +12,8 @@
             </ul>
         </div>
     @endif
-    <meta name="_token" content="{{ csrf_token() }}"/>
-    <div class="row">
+    {{-- <patient-profile :patient="{{$patient}}"></patient-profile> --}}
+    <div class="row patient-profile">
         <div class="col-md-12">
             <div class="portlet box blue">
                 <div class="portlet-title">
@@ -32,6 +32,9 @@
                                     <a href="#tab_6_1" data-toggle="tab"> Profile </a>
                                 </li>
                                 <li>
+                                    <a href="#medical_information" data-toggle="tab"> Medical Information </a>
+                                </li>
+                                <li>
                                     <a href="#tab_6_2" data-toggle="tab"> Appointments </a>
                                 </li>                                
                                 <li>
@@ -48,105 +51,196 @@
                                     <form class="form-horizontal" role="form">
                                         <div class="form-body">                                    
                                             <h3 class="form-section">Patient Info</h3>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="row">
+                                                            <div class="col-md-3 profile-picture">
+                                                                <div class="col-md-12">
+                                                                        
+                                                                    <div class="thumbnail">
+                                                                    
+                                                                        <img src="..." alt="" style="width: 200px; height: 200px;">
+                                                                
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-9">
+                                                                <div class="form-group row">
+                                                                    <label class="control-label col-md-3">Full Name:</label>
+                                                                    <div class="col-md-3">
+                                                                        <p class="form-control-static"> {{$patient->fullname}} </p>
+                                                                    </div>
+                                                                    <label class="control-label col-md-3">Civil Status:</label>
+                                                                    <div class="col-md-3">
+                                                                        <p class="form-control-static"> {{$patient->civil_status}} </p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label class="control-label col-md-3">Gender:</label>
+                                                                    <div class="col-md-3">
+                                                                        <p class="form-control-static"> {{$patient->gender}} </p>
+                                                                    </div>
+                                                                    <label class="control-label col-md-3">Date Of Birth:</label>
+                                                                    <div class="col-md-3">
+                                                                        <p class="form-control-static"> {{$patient->birthdate}} ({{ $patient->age }} years) </p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label class="control-label col-md-3">Occupation:</label>
+                                                                    <div class="col-md-3">
+                                                                        <p class="form-control-static"> {{$patient->occupation}} </p>
+                                                                    </div>
+                                                                    <label class="control-label col-md-3">Contact Number:</label>
+                                                                    <div class="col-md-3">
+                                                                        <p class="form-control-static"> {{$patient->contact_no}}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label class="control-label col-md-3">Occupation:</label>
+                                                                    <div class="col-md-3">
+                                                                        <p class="form-control-static"> {{$patient->occupation}} </p>
+                                                                    </div>
+                                                                    <label class="control-label col-md-3">Address:</label>
+                                                                    <div class="col-md-3">
+                                                                        <p class="form-control-static"> {{$patient->address}}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-3">Full Name:</label>
-                                                        <div class="col-md-9">
-                                                            <p class="form-control-static"> {{$patient->fullname}} </p>
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <h3 class="form-section">Local Address</h3>
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">Address: </label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->local_address}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">No./ Street: </label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->local_street_number}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">Brgy./ Subdivision: </label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->local_subdivision}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">City/ Town: </label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->local_city}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">Country: </label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->local_country}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">Postal Code: </label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->local_postal_code}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">Telephone Number: </label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->local_telephone_number}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">Fax Number: </label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->local_fax_number}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">Email: </label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->local_email}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <h3 class="form-section">Foreign Address</h3>
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">Address</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->foreign_address}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">No./ Street</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->foreign_street_number}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">Brgy./ Subdivision</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->foreign_subdivision}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">City/ Town</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->foreign_city}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">Country</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->foreign_country}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">Postal Code</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->foreign_postal_code}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">Telephone Number</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->foreign_telephone_number}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">Fax Number</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->foreign_fax_number}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label class="control-label col-md-4">Email</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static"> {{$patient->patientAdditionalDetail->foreign_email}} </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <!--/span-->
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-3">Civil Status:</label>
-                                                        <div class="col-md-9">
-                                                            <p class="form-control-static"> {{$patient->civil_status}} </p>
-                                                        </div>
+                                                    <div>
+                                                        
                                                     </div>
                                                 </div>
-                                                <!--/span-->
-                                            </div>
-                                            <!--/row-->
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-3">Gender:</label>
-                                                        <div class="col-md-9">
-                                                            <p class="form-control-static"> {{$patient->gender}} </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-3">Date of Birth:</label>
-                                                        <div class="col-md-9">
-                                                            <p class="form-control-static"> {{$patient->birthdate}} ({{ $patient->age }} years) </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                            </div>
-                                            <!--/row-->
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-3">Occupation:</label>
-                                                        <div class="col-md-9">
-                                                            <p class="form-control-static"> {{$patient->occupation}} </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-3">Contact No:</label>
-                                                        <div class="col-md-9">
-                                                            <p class="form-control-static"> {{$patient->contact_no}} </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                            </div>
-                                            <!--/row-->
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-3">Address:</label>
-                                                        <div class="col-md-9">
-                                                            <p class="form-control-static"> {{$patient->address}} </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-3">Referral:</label>
-                                                        <div class="col-md-9">
-                                                            <p class="form-control-static"> {{$patient->referral}} </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                            </div>
-                                            <!--/row-->
-                                            <h3 class="form-section">Images</h3>
-                                            <div class="row">
-                                                @forelse($patient->pictures as $pic)
-                                                <div class="col-md-3">
-                                                    
-                                                    <div class="thumbnail">
-                                                    
-                                                        <img src="{{$pic}}" alt="" style="width: 200px; height: 200px;">
-                                                   
-                                                    </div>
-                                                    
-                                                </div>
-                                                @empty
-                                                @endforelse
-                                            </div>
+                                            </div>                                           
                                             <h3 class="form-section">Other Info</h3>
                                             <div class="row">
                                                 <div class="col-md-4">
@@ -260,6 +354,9 @@
                                             </div>
                                         </div>
                                     </form>
+                                </div>
+                                <div class="tab-pane fade" id="medical_information">
+                                    <patient-medical-information :patient="{{$patient}}"></patient-medical-information>
                                 </div>
                                 <div class="tab-pane fade" id="tab_6_2">
 									<iframe src="/transaction/patient/list/{{$patient->id}}" frameborder="0" width="100%" height="1200" scrollbar="auto"></iframe>
