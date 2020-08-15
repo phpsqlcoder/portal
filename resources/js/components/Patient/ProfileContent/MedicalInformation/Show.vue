@@ -1,6 +1,10 @@
 <template>
     <div class="row">
-        <template v-if="patient.patient_medical_information === null">NO DATA</template>
+        <template v-if="patient.patient_medical_information === null">
+            <div class="col-md-12">
+                <h3>No Data</h3>
+            </div>
+        </template>
         <template v-else>
             <div class="col-md-12">
                 <h5><strong>IMPORTANT: PLEASE READ CAREFULLY</strong></h5>
