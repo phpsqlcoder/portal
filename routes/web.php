@@ -38,3 +38,9 @@ Route::get('/transaction/patient/list/{patient}', 'TransactionController@list');
 Route::get('/transaction/patient/medcert/{id}', 'TransactionController@medcert');
 Route::get('/transaction/patient/prescription/{id}', 'TransactionController@prescription');
 Route::get('/transaction/patient/receipt/{id}', 'TransactionController@receipt');
+
+
+// Ryan
+Route::get('/receiving/list', 'ReceivingController@index')->name('receiving.list');
+Route::get('/receiving/create', 'ReceivingController@create')->name('receiving.create');
+Route::post('/receiving-store','ReceivingController@store')->name('receiving.store');
