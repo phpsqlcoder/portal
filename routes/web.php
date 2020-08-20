@@ -38,3 +38,5 @@ Route::get('/transaction/patient/list/{patient}', 'TransactionController@list');
 Route::get('/transaction/patient/medcert/{id}', 'TransactionController@medcert');
 Route::get('/transaction/patient/prescription/{id}', 'TransactionController@prescription');
 Route::get('/transaction/patient/receipt/{id}', 'TransactionController@receipt');
+
+Route::resource('schedules', 'ScheduleController');

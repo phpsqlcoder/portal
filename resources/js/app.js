@@ -9,9 +9,10 @@ import Axios from 'axios'
 import VueSweetalert2 from 'vue-sweetalert2';
 import Vuesax from 'vuesax'
 import 'vuesax/dist/vuesax.css'
-
+import 'material-icons/iconfont/material-icons.css';
 Vue.use(VueSweetalert2);
 Vue.use(Vuesax);
+Vue.use(require('vue-moment'));
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -28,10 +29,10 @@ Vue.prototype.$http = Axios
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('patient-create', require('./components/Patient/Create').default);
 Vue.component('patient-profile', require('./components/Patient/Profile').default);
 Vue.component('patient-medical-information', require('./components/Patient/ProfileContent/MedicalInformation').default)
+Vue.component('schedule-index', require('./components/Schedule/Index').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

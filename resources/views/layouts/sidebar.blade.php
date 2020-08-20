@@ -37,7 +37,12 @@
                     <i class="icon-grid"></i>
                     <span class="title">Transactions</span>                   
                 </a>
-                
+            </li>
+            <li class="nav-item  ">
+                <a href="{{ route('schedules.index') }}" class="nav-link">
+                    <i class="icon-calendar"></i>
+                    <span class="title">Schedule</span>                   
+                </a>
             </li>
             <li class="nav-item  ">
                 <a href="javascript:;" class="nav-link nav-toggle">

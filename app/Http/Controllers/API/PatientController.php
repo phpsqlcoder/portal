@@ -15,19 +15,19 @@ use Illuminate\Support\Facades\Auth;
 
 class PatientController extends Controller
 {
-    private $patientRepository;
-    private $patientDetailsRepository;
-    private $additionalDetailRepository;
+    private $patient_repository;
+    private $patient_details_repository;
+    private $additional_details_repository;
 
     public function __construct(
-        PatientRepository $patientRepository, 
-        PatientDetailsRepository $patientDetailsRepository,
-        PatientAdditionalDetailRepository $additionalDetailRepository
+        PatientRepository $patient_repository, 
+        PatientDetailsRepository $patient_details_repository,
+        PatientAdditionalDetailRepository $additional_details_repository
     )
     {
-        $this->patientRepository = $patientRepository;
-        $this->patientDetailsRepository = $patientDetailsRepository;
-        $this->additionalDetailRepository = $additionalDetailRepository;
+        $this->patient_repository = $patient_repository;
+        $this->patient_details_repository = $patient_details_repository;
+        $this->additional_details_repository = $additional_details_repository;
     }
     /**
      * Display a listing of the resource.
@@ -48,11 +48,11 @@ class PatientController extends Controller
     public function store(PatientRequest $request)
     {
         // dd($request->all());
-        $patient = $this->patientRepository->store($request->all());
+        $patient = $this->patient_repository->store($request->all());
 
-        $this->patientDetailsRepository->store($request->all(), $patient);
+        $this->patient_details_repository->store($request->all(), $patient);
 
-		$this->additionalDetailRepository->store($request->all(), $patient);
+		$this->additional_details_repository->store($request->all(), $patient);
 
         return response()->json([
             'success' => true,
@@ -68,7 +68,7 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        $patient = $this->patientRepository->show($id);
+        $patient = $this->patient_repository->show($id);
 
         return response()->json(compact('patient'));
     }
@@ -94,5 +94,12 @@ class PatientController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function searchPatient(Request $request)
+    {
+        $patients = $this->patient_repository->getPatientsByName($request->name);
+
+        return response()->json(compact('patients'));
     }
 }

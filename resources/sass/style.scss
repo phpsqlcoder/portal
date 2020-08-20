@@ -1,9 +1,38 @@
+.w-100 {
+    width: 100%;
+}
+
 .my-1 {
     margin: 14px 0px;
 }
 
 .mx-1 {
     margin: 0px 14px;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.justify-content-center {
+    justify-content: center;       
+}
+
+.justify-content-end {
+    justify-content: flex-end;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.vs-icon.icon-scale.icon-item.vs-select--item-icon.material-icons {
+    top: 18px !important;
+    left: -20px !important;
+}
+
+.con-select {
+    width: 100% !important;
 }
 
 /* Patients Create: Start */

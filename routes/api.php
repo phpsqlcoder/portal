@@ -20,3 +20,21 @@ use Illuminate\Http\Request;
 
 Route::resource('patients', 'API\PatientController');
 Route::resource('patient-medical-information', 'API\PatientMedicalInformationController');
+
+Route::post('search-patient', 'API\PatientController@searchPatient');
+
+Route::prefix('personnels')->group(function() {
+    Route::get('fetch-personnels-that-has-schedule', 'API\PersonnelController@fetchPersonnelsThatHasSchedule');
+    Route::get('fetch-all-doctors', 'API\PersonnelController@fetchAllDoctors');
+    Route::get('fetch-all-nurses', 'API\PersonnelController@fetchAllNurses');
+});
+
+Route::prefix('machines')->group(function() {
+    Route::get('/', 'API\MachineController@index');
+    Route::post('fetch-available-machines', 'API\MachineController@fetchAvailableMachines');
+});
+
+Route::prefix('schedules')->group(function() {
+    Route::post('create-new-schedule', 'API\ScheduleController@store');
+    Route::get('fetch-today-schedule', 'API\ScheduleController@fetchTodaySchedule');
+});

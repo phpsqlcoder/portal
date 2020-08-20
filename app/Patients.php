@@ -82,4 +82,9 @@ class Patients extends Model
     {
         return $this->hasOne('App\PatientMedicalInformation', 'patient_id');
     }
+
+    public function schedules()
+    {
+        return $this->hasMany('App\Schedule', 'patient_id');
+    }
 }
