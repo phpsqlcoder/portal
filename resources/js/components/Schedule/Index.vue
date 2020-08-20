@@ -4,7 +4,7 @@
             <div class="portlet box blue">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-gift"></i>Scedules
+                        <i class="fa fa-info"></i>Scedules
                     </div>
                     <!-- <div class="tools">
                         <a href="javascript:;" class="collapse"> </a>
@@ -20,10 +20,8 @@
                                 <button class="btn btn-primary">Next Day</button>
                             </div>
                         </div>
-                        <!-- {{moment()}}
-                        {{moment('8:00:00', 'h:m').format('LT')}} -->
                         <div class="col-md-12">
-                            <table class="table table-hover my-1">
+                            <table class="table table-bordered my-1">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -51,7 +49,16 @@
                                                 )
                                                 "
                                                 class="bg-danger">
-                                                Not Available
+                                                <a class="text-primary information" @click="scheduleInformation(doctor)"><i class="fa fa-info-circle"></i></a>
+                                                    <span v-for="schedule in doctor.schedules" :key="schedule.id">
+                                                        <template v-if="moment(schedule.time_to, 'h:m a').diff(moment('7:00:00', 'h:m a').add(index, 'hours')) >= 0
+                                                            && moment('7:00:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0">
+                                                                <ul>
+                                                                    <li>{{schedule.patients.fname}}</li>
+                                                                </ul>
+                                                                
+                                                        </template>
+                                                    </span>
                                             </td>
                                             <td :key="index" v-else class="bg-success">Available</td>
                                         </template>
@@ -67,7 +74,15 @@
                                                 )
                                                 "
                                                 class="bg-danger">
-                                                Not Available
+                                                <a class="text-primary information" @click="scheduleInformation(nurse)"><i class="fa fa-info-circle"></i></a>
+                                                    <span v-for="schedule in nurse.schedules" :key="schedule.id">
+                                                        <template v-if="moment(schedule.time_to, 'h:m a').diff(moment('7:00:00', 'h:m a').add(index, 'hours')) >= 0
+                                                            && moment('7:00:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0">
+                                                                <ul>
+                                                                    <li>{{schedule.patients.fname}}</li>
+                                                                </ul>
+                                                        </template>
+                                                    </span>
                                             </td>
                                             <td :key="index" v-else class="bg-success">Available</td>
                                         </template>
@@ -91,15 +106,13 @@
                         <div class="form-group row">
                             <label class="col-md-3">Date</label>
                             <div class="col-md-9">
-                                <input type="date" :min="moment().format('Y-MM-D')" class="form-control" v-model="form.date" @input="fetchMachines">
+                                <input type="date" :min="moment().format('Y-MM-D')" class="form-control" v-model="form.date">
                             </div>
                         </div>
-                        <!-- <span v-if="moment(form.time_from, 'h:m a').format('LT') < moment(form.time_to, 'h:m a').format('LT')">TO mas dako sa FROM</span>
-                        <span v-if="moment(form.time_from, 'h:m a').format('LT') > moment(form.time_to, 'h:m a').format('LT')">FROM mas dako sa TO</span> -->
                         <div class="form-group row">
                             <label class="col-md-3">Time (From - To)</label>
                             <div class="col-md-4">
-                                <select class="form-control" v-model="form.time_from" @change="fetchMachines" :disabled="form.date===null">
+                                <select class="form-control" v-model="form.time_from" :disabled="form.date===null">
                                     <option value="" disabled>From</option>
                                     <option 
                                     v-for="index in 10" 
@@ -111,7 +124,7 @@
                             </div>
                             <div class="col-md-1"></div>
                             <div class="col-md-4">
-                                <select class="form-control" v-model="form.time_to" @change="fetchMachines" :disabled="form.date===null || form.time_from===''">
+                                <select class="form-control" v-model="form.time_to" :disabled="form.date===null || form.time_from===''">
                                     <option value="" disabled>To</option>
                                     <option 
                                     v-for="index in 10" 
@@ -275,6 +288,13 @@ export default {
             this.$http.post('api/schedules/create-new-schedule', this.form)
             .then(response => console.log(response.data))
             .catch(error => console.log(error))
+        },
+        scheduleInformation(doctor) {
+            doctor.schedules.forEach(schedule => {
+                console.log(schedule.patients.fname)
+                console.log(schedule.patients.mname)
+                console.log(schedule.patients.lname)
+            })
         }
     }
 }
@@ -289,5 +309,12 @@ export default {
         }
     }
 
- 
+    .information {
+        position: relative;
+        left: 90%;
+    }
+
+    table thead tr th {
+        text-align: center;
+    }
 </style>

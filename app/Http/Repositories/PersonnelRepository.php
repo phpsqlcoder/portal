@@ -29,7 +29,7 @@ class PersonnelRepository {
 
     public function fetchPersonnelsThatHasSchedule()
     {
-        return $this->personnel->with('schedules')->whereHas('schedules', function ($query) {
+        return $this->personnel->with(['schedules', 'schedules.patients'])->whereHas('schedules', function ($query) {
             $query->where('date', 'Like', date('Y-m-d'));
         })->get();
     }
