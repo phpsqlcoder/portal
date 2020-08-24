@@ -39,6 +39,7 @@ Route::get('/transaction/patient/medcert/{id}', 'TransactionController@medcert')
 Route::get('/transaction/patient/prescription/{id}', 'TransactionController@prescription');
 Route::get('/transaction/patient/receipt/{id}', 'TransactionController@receipt');
 
+<<<<<<< HEAD
 
 // Ryan
 Route::get('/receiving/list', 'ReceivingController@index')->name('receiving.list');
@@ -48,3 +49,6 @@ Route::post('/receiving-store','ReceivingController@store')->name('receiving.sto
 Route::get('/guest-form/create',function(){
 	return view('guest.create');
 })->name('receiving.create');
+=======
+Route::resource('schedules', 'ScheduleController');
+>>>>>>> a3368ff33b9ff62f232a4ed2207bc2bc33abdba8

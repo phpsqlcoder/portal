@@ -42,4 +42,9 @@ class PatientRepository {
     {
 		return $this->patient->with(['info', 'patientAdditionalDetail', 'patientMedicalInformation'])->whereId($id)->first();      
     }
+
+    public function getPatientsByName($name)
+    {
+        return $this->patient->where('fname', 'LIKE', "%$name%")->orWhere('lname', 'LIKE', "%$name%")->get();
+    }
 }
