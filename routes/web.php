@@ -40,6 +40,7 @@ Route::get('/transaction/patient/prescription/{id}', 'TransactionController@pres
 Route::get('/transaction/patient/receipt/{id}', 'TransactionController@receipt');
 
 Route::resource('schedules', 'ScheduleController');
+Route::resource('personnels', 'PersonnelController');
 
 // Ryan
 Route::get('/receiving/list', 'ReceivingController@index')->name('receiving.list');

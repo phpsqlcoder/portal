@@ -38,6 +38,15 @@ class PersonnelRepository {
         })->get();
     }
 
+    public function fetchPersonnelsThatHasScheduleByDate($request)
+    {
+        return $this->personnel->with(['schedules' => function($query) use ($request) {
+            $query->where('date', '=', date('Y-m-d', strtotime($request['date'])));
+        }, 'schedules.patients'])->whereHas('schedules', function($query) use ($request) {
+            $query->where('date', '=', date('Y-m-d', strtotime($request['date'])));
+        })->get();
+    }
+
     public function fetchAvailablePersonnels($date)
     {
         return $this->personnel->whereNotIn('id', function($query) use ($date) {

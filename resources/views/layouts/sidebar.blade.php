@@ -39,6 +39,12 @@
                 </a>
             </li>
             <li class="nav-item  ">
+                <a href="{{ route('personnels.index') }}" class="nav-link">
+                    <i class="icon-users"></i>
+                    <span class="title">Personnels</span>                   
+                </a>
+            </li>
+            <li class="nav-item  ">
                 <a href="{{ route('schedules.index') }}" class="nav-link">
                     <i class="icon-calendar"></i>
                     <span class="title">Schedule</span>                   
@@ -81,7 +87,7 @@
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
-                    <li class="nav-item  ">
+                    {{-- <li class="nav-item  ">
                         <a href="{{ route('report.patients') }}" class="nav-link ">
                             <span class="title">Patients</span>
                         </a>
@@ -90,7 +96,7 @@
                         <a href="{{ route('report.receiving') }}" class="nav-link ">
                             <span class="title">Receiving</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item  ">
                         <a href="elements_ribbons.html" class="nav-link ">
                             <span class="title">Top Services</span>
