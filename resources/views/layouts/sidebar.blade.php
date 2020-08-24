@@ -52,7 +52,7 @@
                         </a>
                     </li>
                     <li class="nav-item  ">
-                        <a href="/stockin" class="nav-link ">
+                        <a href="/receiving/list" class="nav-link ">
                             <span class="title">Stock In</span>
                         </a>
                     </li>
@@ -102,6 +102,13 @@
                         </a>
                     </li>
                 </ul>
+            </li>
+            <li class="nav-item  ">
+                <a href="/guest-form" class="nav-link nav-toggle">
+                    <i class="fa fa-user"></i>
+                    <span class="title">Guest Form</span>                  
+                </a>
+               
             </li>
             
           

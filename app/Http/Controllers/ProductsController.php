@@ -19,7 +19,7 @@ class ProductsController extends Controller
         $save = Products::create([
             'name' => $request->name,
             'brand' => $request->brand,
-            'cost' => $request->cost,
+            'cost' => 0,
             'price' => $request->price
         ]);
 
@@ -36,7 +36,7 @@ class ProductsController extends Controller
         $update = $product->update([
             'name' => $request->name_edit,
             'brand' => $request->brand_edit,
-            'cost' => $request->cost_edit,
+            'cost' => 0,
             'price' => $request->price_edit
         ]);
 

@@ -50,7 +50,7 @@
 										<tr id="receiving-items{{$d->id}}" class="collapse">
 		                                    <td colspan="4">
 		                                    	<div class="col-md-12">
-		                                    		<table class="table table-bordered">
+		                                    		<table class="table table-bordered" width="100%">
 		                                        		<thead>
 		                                        			<th>Name</th>
 		                                        			<th>Cost</th>
