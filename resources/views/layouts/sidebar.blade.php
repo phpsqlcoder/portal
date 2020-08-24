@@ -37,7 +37,12 @@
                     <i class="icon-grid"></i>
                     <span class="title">Transactions</span>                   
                 </a>
-                
+            </li>
+            <li class="nav-item  ">
+                <a href="{{ route('schedules.index') }}" class="nav-link">
+                    <i class="icon-calendar"></i>
+                    <span class="title">Schedule</span>                   
+                </a>
             </li>
             <li class="nav-item  ">
                 <a href="javascript:;" class="nav-link nav-toggle">
@@ -87,24 +92,24 @@
                         </a>
                     </li>
                     <li class="nav-item  ">
-                        <a href="elements_ribbons.html" class="nav-link ">
-                            <span class="title">Top Services</span>
+                        <a href="{{ route('report.prescription') }}" class="nav-link ">
+                            <span class="title">Prescription</span>
                         </a>
                     </li>
                     <li class="nav-item  ">
-                        <a href="elements_overlay.html" class="nav-link ">
-                            <span class="title">Top Items</span>
+                        <a href="{{ route('report.booking') }}" class="nav-link ">
+                            <span class="title">Bookings</span>
                         </a>
                     </li>
                     <li class="nav-item  ">
-                        <a href="elements_cards.html" class="nav-link ">
-                            <span class="title">Monthly Analysis</span>
+                        <a href="{{ route('report.inventory') }}" class="nav-link ">
+                            <span class="title">Inventory</span>
                         </a>
                     </li>
                 </ul>
             </li>
             <li class="nav-item  ">
-                <a href="/guest-form" class="nav-link nav-toggle">
+                <a href="/guest-form/create" target="_blank" class="nav-link nav-toggle">
                     <i class="fa fa-user"></i>
                     <span class="title">Guest Form</span>                  
                 </a>
