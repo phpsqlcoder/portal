@@ -5,14 +5,17 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\PersonnelRepository;
+use App\Http\Services\PersonnelService;
 
 class PersonnelController extends Controller
 {
     private $personnel_repository;
+    private $personnel_service;
 
-    public function __construct(PersonnelRepository $personnel_repository)
+    public function __construct(PersonnelRepository $personnel_repository, PersonnelService $personnel_service)
     {
         $this->personnel_repository = $personnel_repository;
+        $this->personnel_service = $personnel_service;
     }
     /**
      * Display a listing of the resource.
@@ -87,6 +90,13 @@ class PersonnelController extends Controller
     {
         $personnels = $this->personnel_repository->fetchPersonnelsThatHasSchedule();
         
+        return response()->json(compact('personnels'));
+    }
+
+    public function fetchAvailablePersonnels(Request $request)
+    {
+        $personnels = $this->personnel_service->fetchAvailablePersonnels($request->all());
+
         return response()->json(compact('personnels'));
     }
 

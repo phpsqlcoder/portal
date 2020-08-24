@@ -13,6 +13,8 @@ class Patients extends Model
 
     protected $fillable = ['fname', 'lname','mname','extname','gender','birthdate','address','contact_no','civil_status','occupation','referral','images','user_id'];
 
+    protected $appends = ['fullname'];
+    
     public function getFullnameAttribute(){
         return $this->lname.", ".$this->fname." ".$this->mname." ".$this->extname;
     }

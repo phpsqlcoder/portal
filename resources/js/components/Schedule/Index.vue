@@ -49,18 +49,29 @@
                                                 )
                                                 "
                                                 class="bg-danger">
-                                                <a class="text-primary information" @click="scheduleInformation(doctor)"><i class="fa fa-info-circle"></i></a>
-                                                    <span v-for="schedule in doctor.schedules" :key="schedule.id">
-                                                        <template v-if="moment(schedule.time_to, 'h:m a').diff(moment('7:00:00', 'h:m a').add(index, 'hours')) >= 0
-                                                            && moment('7:00:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0">
-                                                                <ul>
-                                                                    <li>{{schedule.patients.fname}}</li>
-                                                                </ul>
-                                                                
-                                                        </template>
-                                                    </span>
+                                                <div class="row m-0">
+                                                    <div class="col-md-12 d-flex justify-content-end p-0"><a class="text-primary information" @click="scheduleInformation(doctor)"><i class="fa fa-info-circle"></i></a></div>
+                                                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                                        <ul>
+                                                            <template v-for="schedule in doctor.schedules" >
+                                                                <template v-if="moment(schedule.time_to, 'h:m a').diff(moment('7:00:00', 'h:m a').add(index, 'hours')) >= 0
+                                                                && moment('7:00:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0">
+                                                                    <li :key="schedule.id">
+                                                                    {{schedule.patients.fname}} {{schedule.patients.mname}} {{schedule.patients.lname}}
+                                                                    </li>
+                                                                </template>
+                                                            </template>
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                             </td>
-                                            <td :key="index" v-else class="bg-success">Available</td>
+                                            <td :key="index" v-else class="bg-success">
+                                                <div class="row m-0">
+                                                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                                        Available
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </template>
                                     </tr>
                                     <tr v-for="nurse in assigned_nurses" :key="nurse.id">
@@ -74,7 +85,22 @@
                                                 )
                                                 "
                                                 class="bg-danger">
-                                                <a class="text-primary information" @click="scheduleInformation(nurse)"><i class="fa fa-info-circle"></i></a>
+                                                <div class="row m-0">
+                                                    <div class="col-md-12 d-flex justify-content-end p-0"><a class="text-primary information" @click="scheduleInformation(nurse)"><i class="fa fa-info-circle"></i></a></div>
+                                                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                                        <ul>
+                                                            <template v-for="schedule in nurse.schedules" >
+                                                                <template v-if="moment(schedule.time_to, 'h:m a').diff(moment('7:00:00', 'h:m a').add(index, 'hours')) >= 0
+                                                                && moment('7:00:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0">
+                                                                    <li :key="schedule.id">
+                                                                    {{schedule.patients.fname}} {{schedule.patients.mname}} {{schedule.patients.lname}}
+                                                                    </li>
+                                                                </template>
+                                                            </template>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <!-- <a class="text-primary information" @click="scheduleInformation(nurse)"><i class="fa fa-info-circle"></i></a>
                                                     <span v-for="schedule in nurse.schedules" :key="schedule.id">
                                                         <template v-if="moment(schedule.time_to, 'h:m a').diff(moment('7:00:00', 'h:m a').add(index, 'hours')) >= 0
                                                             && moment('7:00:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0">
@@ -82,9 +108,15 @@
                                                                     <li>{{schedule.patients.fname}}</li>
                                                                 </ul>
                                                         </template>
-                                                    </span>
+                                                    </span> -->
                                             </td>
-                                            <td :key="index" v-else class="bg-success">Available</td>
+                                            <td :key="index" v-else class="bg-success">
+                                                <div class="row m-0">
+                                                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                                        Available
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </template>
                                     </tr>
                                 </tbody>
@@ -101,18 +133,20 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">Add Schedule</h4>
+                        {{form.time_from}}
+                        {{form.time_to}}
                     </div>
                     <div class="modal-body">
                         <div class="form-group row">
                             <label class="col-md-3">Date</label>
                             <div class="col-md-9">
-                                <input type="date" :min="moment().format('Y-MM-D')" class="form-control" v-model="form.date">
+                                <input type="date" :min="moment().format('Y-MM-D')" class="form-control" v-model="form.date" @change="fetchPersonnels">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3">Time (From - To)</label>
                             <div class="col-md-4">
-                                <select class="form-control" v-model="form.time_from" :disabled="form.date===null">
+                                <select class="form-control" v-model="form.time_from" :disabled="form.date===null" @change="fetchPersonnels">
                                     <option value="" disabled>From</option>
                                     <option 
                                     v-for="index in 10" 
@@ -124,7 +158,7 @@
                             </div>
                             <div class="col-md-1"></div>
                             <div class="col-md-4">
-                                <select class="form-control" v-model="form.time_to" :disabled="form.date===null || form.time_from===''">
+                                <select class="form-control" v-model="form.time_to" :disabled="form.date===null || form.time_from===''" @change="fetchPersonnels">
                                     <option value="" disabled>To</option>
                                     <option 
                                     v-for="index in 10" 
@@ -262,7 +296,6 @@ export default {
                 var personnels = response.data.personnels
                 this.assigned_doctors = personnels.filter(personnel => (personnel.personnel_type === 'Doctor'))
                 this.assigned_nurses = personnels.filter(personnel => (personnel.personnel_type === 'Nurse'))
-                console.log(personnels)
             })
             .catch(error => console.log(error))
         },
@@ -278,6 +311,31 @@ export default {
                 this.machines = request_three.data.machines
             }))
             .catch(error => console.log(error))
+        },
+        fetchPersonnels() {
+            // if(this.form.date != null && this.form.time_from != '' && this.form.time_to === '') {
+            //     this.form.time_to = moment(this.form.time_from, 'h:m a').add(1, 'hours').format('LT')
+            // }
+            if(this.form.date != null && this.form.time_from != '' && this.form.time_to != ''){
+                this.$http.all([
+                    this.$http.post('api/personnels/fetch-available-personnels', {
+                        date: this.form.date,
+                        time_from: this.form.time_from,
+                        time_to: this.form.time_to
+                    }),
+                    this.$http.post('api/machines/fetch-available-machines', {
+                        date: this.form.date,
+                        time_from: this.form.time_from,
+                        time_to: this.form.time_to
+                    }),
+                ])
+                .then(this.$http.spread((doctors, nurses, machines) => {
+                    console.log(doctors)
+                    console.log(nurses)
+                    console.log(machines)
+                }))
+                .catch(error => console.log(error))
+            }
         },
         searchPatient() {
             this.$http.post('api/search-patient', {name: this.form.patient})
@@ -301,20 +359,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    ul {
-        margin: 5px 20px;
-        li {
-            list-style-type: none;
-            margin: 10px 0px;
+    .modal {
+        ul {
+            margin: 5px 20px;
+            li {
+                list-style-type: none;
+                margin: 10px 0px;
+            }
         }
     }
 
-    .information {
-        position: relative;
-        left: 90%;
+    table tbody {
+        ul {
+            li {
+                display: list-item;
+            }
+        }
     }
 
     table thead tr th {
         text-align: center;
     }
+
+    // table tbody tr td {
+    //     text-align: center;
+    //     align-items: center;
+    // }
 </style>

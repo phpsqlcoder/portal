@@ -28,13 +28,14 @@ class ScheduleService {
 
     public function store($data)
     {
+        
         $patient = $this->patient_repository->getPatientsByName($data['patient']);
 
-        $data['time_from'] = gmdate("H:i", strtotime($data['time_from']));
-        $data['time_to'] = gmdate("H:i", strtotime($data['time_to']));
+        $data['time_from'] = date("H:i", strtotime($data['time_from']));
+        $data['time_to'] = date("H:i", strtotime($data['time_to']));
         
         $data['patient'] = $patient[0];
-    
+
         $schedule = $this->schedule_repository->store($data);
 
         foreach ($data['doctors'] as $key => $doctor) {

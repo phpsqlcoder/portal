@@ -76,6 +76,7 @@ class MachineController extends Controller
 
     public function fetchAvailableMachines(Request $request)
     {
+        dd($request->all());
         $machines = $this->machine_service->fetchAvailableMachines($request->all());
     }
 }
