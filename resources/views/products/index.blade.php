@@ -37,10 +37,10 @@
                                         <label>Brand</label>
                                         <input type="text" required="required" class="form-control" name="brand" placeholder="Enter brand">
                                     </div>         
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label>Cost</label>
                                         <input type="number" min="0.00" step="0.01" value="0.00" class="form-control" name="cost">
-                                    </div>    
+                                    </div>   -->  
                                     <div class="form-group">
                                         <label>Price</label>
                                         <input type="number" min="0.00" step="0.01" value="0.00" class="form-control" name="price">
@@ -78,10 +78,10 @@
                                         <label>Brand</label>
                                         <input type="text" required="required" class="form-control input-lg" name="brand_edit" id="brand_edit" value="">
                                     </div>     
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label>Cost</label>
                                         <input type="number" min="0.00" step="0.01" value="0.00" class="form-control" name="cost_edit" id="cost_edit">
-                                    </div>    
+                                    </div>   -->  
                                     <div class="form-group">
                                         <label>Price</label>
                                         <input type="number" min="0.00" step="0.01" value="0.00" class="form-control" name="price_edit" id="price_edit">
@@ -155,9 +155,9 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Brand</th>
-                                <th style="text-align:right">Cost</th>
+                             <!--    <th style="text-align:right">Cost</th> -->
                                 <th style="text-align:right">Price</th>
-                                <th style="text-align:right">Percentage</th>
+                             <!--    <th style="text-align:right">Percentage</th> -->
                                 <th style="text-align:right">Updated</th>
                             </tr>
                         </thead>
@@ -166,9 +166,9 @@
                                 <td>{{ $product->id }}</td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->brand }}</td>
-                                <td align="right">{{ number_format($product->cost ,2)}}</td>
+                            <!--     <td align="right">{{ number_format($product->cost ,2)}}</td> -->
                                 <td align="right">{{ number_format($product->price,2) }}</td>
-                                <td align="right">{{ $product->percentage }}</td>
+                              <!--   <td align="right">{{ $product->percentage }}</td> -->
                                 <td align="right"><small>{{ $product->updated_at->diffForHumans() }}</small></td>
                                 <td align="right">
                                     <a class="btn btn-xs green" href="#" onclick="maintenance_edit({{ $product->id }})">Edit</a>
