@@ -85,4 +85,6 @@ class PatientMedicalInformationController extends Controller
     {
         //
     }
+
 }
+
