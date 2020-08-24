@@ -41,6 +41,12 @@ Route::get('/transaction/patient/receipt/{id}', 'TransactionController@receipt')
 
 
 // Ryan
+
+// Reports
+	Route::get('/report/patients','ReportController@patients')->name('report.patients');
+	Route::get('/report/receiving','ReportController@receiving')->name('report.receiving');
+//
+
 Route::get('/receiving/list', 'ReceivingController@index')->name('receiving.list');
 Route::get('/receiving/create', 'ReceivingController@create')->name('receiving.create');
 Route::post('/receiving-store','ReceivingController@store')->name('receiving.store');
@@ -48,3 +54,4 @@ Route::post('/receiving-store','ReceivingController@store')->name('receiving.sto
 Route::get('/guest-form/create',function(){
 	return view('guest.create');
 })->name('receiving.create');
+
