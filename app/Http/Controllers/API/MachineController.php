@@ -79,4 +79,18 @@ class MachineController extends Controller
         dd($request->all());
         $machines = $this->machine_service->fetchAvailableMachines($request->all());
     }
+
+    public function fetchMachinesThatHasSchedule()
+    {
+        $machines = $this->machine_repository->fetchMachinesThatHasSchedule();
+
+        return response()->json(compact('machines'));
+    }
+
+    public function fetchMachinesThatHasScheduleByDate(Request $request)
+    {
+        $machines = $this->machine_repository->fetchMachinesThatHasScheduleByDate($request->all());
+
+        return response()->json(compact('machines'));
+    }
 }
