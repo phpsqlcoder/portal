@@ -403,9 +403,6 @@ export default {
                 this.fetchPersonnelsThatHasSchedule()
                 this.fetchMachinesThatHasSchedule()
             })
-
-            .then(response => console.log(response.data))
-
             .catch(error => console.log(error))
         },
         scheduleInformation(doctor) {
