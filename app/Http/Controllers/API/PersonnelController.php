@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\PersonnelRepository;
+use App\Http\Requests\PersonnelRequest;
 use App\Http\Services\PersonnelService;
 
 class PersonnelController extends Controller
@@ -24,7 +25,9 @@ class PersonnelController extends Controller
      */
     public function index()
     {
-        //
+        $personnels = $this->personnel_repository->fetchAll();
+
+        return response()->json(compact('personnels'));
     }
 
     /**
@@ -33,9 +36,14 @@ class PersonnelController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PersonnelRequest $request)
     {
-        //
+        $this->personnel_repository->store($request->validated());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Personnel saved successfully'
+        ]);
     }
 
     /**

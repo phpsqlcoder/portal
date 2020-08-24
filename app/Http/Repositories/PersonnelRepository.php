@@ -4,6 +4,7 @@ namespace App\Http\Repositories;
 
 use App\Personnel;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class PersonnelRepository {
@@ -12,6 +13,25 @@ class PersonnelRepository {
     public function __construct(Personnel $personnel)
     {
         $this->personnel = $personnel;
+    }
+
+    public function fetchAll()
+    {
+        return $this->personnel->all();
+    }
+
+    public function store($data)
+    {
+        try {
+            return $this->personnel->create([
+                'name' => $data['name'],
+                'personnel_type' => $data['personnel_type'],
+                'biometric_id' => 100
+            ]);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $exception;
+        }
     }
 
     public function fetchPersonnel($personnel)
