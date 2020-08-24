@@ -28,11 +28,14 @@ Route::prefix('personnels')->group(function() {
     Route::get('fetch-all-doctors', 'API\PersonnelController@fetchAllDoctors');
     Route::get('fetch-all-nurses', 'API\PersonnelController@fetchAllNurses');
     Route::post('fetch-available-personnels', 'API\PersonnelController@fetchAvailablePersonnels');
+    Route::post('fetch-personnels-that-has-schedule-by-date', 'API\PersonnelController@fetchPersonnelsThatHasScheduleByDate');
 });
 
 Route::prefix('machines')->group(function() {
     Route::get('/', 'API\MachineController@index');
     Route::post('fetch-available-machines', 'API\MachineController@fetchAvailableMachines');
+    Route::get('fetch-machines-that-has-schedule', 'API\MachineController@fetchMachinesThatHasSchedule');
+    Route::post('fetch-machines-that-has-schedule-by-date', 'API\MachineController@fetchMachinesThatHasScheduleByDate');
 });
 
 Route::prefix('schedules')->group(function() {

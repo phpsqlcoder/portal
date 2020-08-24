@@ -12,20 +12,6 @@
     <div class="container">
         <br>
         <div class="text-center"><h5>Patients</h5></div><br>
-        <div class="row">
-            <div class="col-md-12">
-                <form>
-                <table width="100%" style="font-size:12px;font-family:Arial;">
-                    <tr>
-                        <td>Start: <input type="date" name="startdate" class="form-control input-sm " value="{{ request('startdate') }}"></td>
-                        <td>End: <input type="date" name="enddate" class="form-control input-sm " value="{{ request('enddate') }}"></td>                        
-                        <td><br><input type="submit" value="Generate" class="btn btn-md btn-success"></td>
-                    </tr>
-                </table>
-                </form>
-               
-            </div>
-        </div>
         <br><br>
         @if(isset($rs))
             <div class="row row-sm">
@@ -48,7 +34,7 @@
                                 <td>{{ $r->contact_no }}</td>
                                 <td>{{ $r->address }}</td>
                                 <td>{{ $r->occupation }}</td>
-                                <td>{{ date('m-d-Y h:i A',strtotime($r->created_at)) }}</td>
+                                <td>{{ \App\transaction_header::last_visit($r->id) }}</td>
                             </tr>
                         @empty
                         @endforelse

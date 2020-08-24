@@ -15,6 +15,4 @@ class transaction_detail extends Model
 	public function header(){
     	return $this->belongsTo('App\transaction_header','header_id');
 	}
-
-	
 }

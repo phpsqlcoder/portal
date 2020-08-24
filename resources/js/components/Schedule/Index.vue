@@ -16,8 +16,13 @@
                         <div class="col-md-12 d-flex justify-content-center my-1">
                             <div>
                                 <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Schedule</button>
-                                <button class="btn btn-primary">Previous Day</button>
-                                <button class="btn btn-primary">Next Day</button>
+                                <button class="btn btn-primary" @click="previousDay">Previous Day</button>
+                                <button class="btn btn-primary" @click="nextDay">Next Day</button>
+                            </div>
+                            &nbsp;
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon1">Date</span>
+                                <input type="date" class="form-control" placeholder="Username" aria-describedby="basic-addon1" v-model="date" @change="changedDate">
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -100,15 +105,42 @@
                                                         </ul>
                                                     </div>
                                                 </div>
-                                                <!-- <a class="text-primary information" @click="scheduleInformation(nurse)"><i class="fa fa-info-circle"></i></a>
-                                                    <span v-for="schedule in nurse.schedules" :key="schedule.id">
-                                                        <template v-if="moment(schedule.time_to, 'h:m a').diff(moment('7:00:00', 'h:m a').add(index, 'hours')) >= 0
-                                                            && moment('7:00:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0">
-                                                                <ul>
-                                                                    <li>{{schedule.patients.fname}}</li>
-                                                                </ul>
-                                                        </template>
-                                                    </span> -->
+                                            </td>
+                                            <td :key="index" v-else class="bg-success">
+                                                <div class="row m-0">
+                                                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                                        Available
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </template>
+                                    </tr>
+                                    <tr v-for="machine in assigned_machines" :key="machine.id">
+                                        <td>{{machine.name}}</td>
+                                        <template v-for="index in 10">
+                                            <td :key="index"
+                                            v-if="
+                                                machine.schedules.find(schedule => 
+                                                (moment(schedule.time_to, 'h:m a').diff(moment('7:00:00', 'h:m a').add(index, 'hours')) >= 0
+                                                && moment('7:00:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0)
+                                                )
+                                                "
+                                                class="bg-danger">
+                                                <div class="row m-0">
+                                                    <div class="col-md-12 d-flex justify-content-end p-0"><a class="text-primary information" @click="scheduleInformation(machine)"><i class="fa fa-info-circle"></i></a></div>
+                                                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                                        <ul>
+                                                            <template v-for="schedule in machine.schedules" >
+                                                                <template v-if="moment(schedule.time_to, 'h:m a').diff(moment('7:00:00', 'h:m a').add(index, 'hours')) >= 0
+                                                                && moment('7:00:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0">
+                                                                    <li :key="schedule.id">
+                                                                    {{schedule.patients.fname}} {{schedule.patients.mname}} {{schedule.patients.lname}}
+                                                                    </li>
+                                                                </template>
+                                                            </template>
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td :key="index" v-else class="bg-success">
                                                 <div class="row m-0">
@@ -283,11 +315,13 @@ export default {
                 machines: [],
             },
             time: null,
+            date: moment().format('Y-MM-D'),
         }
     },
     mounted() {
         this.fetchPersonnel()
         this.fetchPersonnelsThatHasSchedule()
+        this.fetchMachinesThatHasSchedule()
     },
     methods: {
         fetchPersonnelsThatHasSchedule() {
@@ -297,6 +331,11 @@ export default {
                 this.assigned_doctors = personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'doctor'))
                 this.assigned_nurses = personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'nurse'))
             })
+            .catch(error => console.log(error))
+        },
+        fetchMachinesThatHasSchedule() {
+            this.$http.get('api/machines/fetch-machines-that-has-schedule')
+            .then(response => this.assigned_machines = response.data.machines)
             .catch(error => console.log(error))
         },
         fetchPersonnel() {
@@ -350,6 +389,7 @@ export default {
                     text:'Save schedule successfully',
                     color:'success'
                 })
+                this.date = this.form.date
                 this.form = {...this.form,
                     date: null,
                     time_from: '',
@@ -361,10 +401,8 @@ export default {
                     machines: [],
                 }
                 this.fetchPersonnelsThatHasSchedule()
+                this.fetchMachinesThatHasSchedule()
             })
-
-            .then(response => console.log(response.data))
-
             .catch(error => console.log(error))
         },
         scheduleInformation(doctor) {
@@ -373,6 +411,47 @@ export default {
                 console.log(schedule.patients.mname)
                 console.log(schedule.patients.lname)
             })
+        },
+        previousDay() {
+            this.date = moment(this.date, 'Y-MM-DD').subtract(1, 'days').format('Y-MM-DD')
+            this.$http.all([
+                this.$http.post('api/personnels/fetch-personnels-that-has-schedule-by-date', {date: this.date}),
+                this.$http.post('api/machines/fetch-machines-that-has-schedule-by-date', {date: this.date})
+            ])
+            .then(this.$http.spread((response, machines) => {
+                var personnels = response.data.personnels
+                this.assigned_doctors = personnels.filter(personnel => (personnel.personnel_type === 'Doctor'))
+                this.assigned_nurses = personnels.filter(personnel => (personnel.personnel_type === 'Nurse'))
+                this.assigned_machines = machines.data.machines
+            }))
+            .catch(error => console.log(error))
+        },
+        nextDay() {
+            this.date = moment(this.date, 'Y-MM-DD').add(1, 'days').format('Y-MM-DD')
+            this.$http.all([
+                this.$http.post('api/personnels/fetch-personnels-that-has-schedule-by-date', {date: this.date}),
+                this.$http.post('api/machines/fetch-machines-that-has-schedule-by-date', {date: this.date})
+            ])
+            .then(this.$http.spread((response, machines) => {
+                var personnels = response.data.personnels
+                this.assigned_doctors = personnels.filter(personnel => (personnel.personnel_type === 'Doctor'))
+                this.assigned_nurses = personnels.filter(personnel => (personnel.personnel_type === 'Nurse'))
+                this.assigned_machines = machines.data.machines
+            }))
+            .catch(error => console.log(error))
+        },
+        changedDate() {
+            this.$http.all([
+                this.$http.post('api/personnels/fetch-personnels-that-has-schedule-by-date', {date: this.date}),
+                this.$http.post('api/machines/fetch-machines-that-has-schedule-by-date', {date: this.date})
+            ])
+            .then(this.$http.spread((response, machines) => {
+                var personnels = response.data.personnels
+                this.assigned_doctors = personnels.filter(personnel => (personnel.personnel_type === 'Doctor'))
+                this.assigned_nurses = personnels.filter(personnel => (personnel.personnel_type === 'Nurse'))
+                this.assigned_machines = machines.data.machines
+            }))
+            .catch(error => console.log(error))
         }
     }
 }

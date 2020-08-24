@@ -46,6 +46,12 @@
                 </a>
             </li>
             <li class="nav-item  ">
+                <a href="{{ route('personnels.index') }}" class="nav-link">
+                    <i class="icon-users"></i>
+                    <span class="title">Personnels</span>                   
+                </a>
+            </li>
+            <li class="nav-item  ">
                 <a href="{{ route('schedules.index') }}" class="nav-link">
                     <i class="icon-calendar"></i>
                     <span class="title">Schedule</span>                   
@@ -97,20 +103,20 @@
                         <a href="" class="nav-link ">
                             <span class="title">Receiving</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item  ">
-                        <a href="elements_ribbons.html" class="nav-link ">
-                            <span class="title">Top Services</span>
+                        <a href="{{ route('report.prescription') }}" class="nav-link ">
+                            <span class="title">Prescription</span>
                         </a>
                     </li>
                     <li class="nav-item  ">
-                        <a href="elements_overlay.html" class="nav-link ">
-                            <span class="title">Top Items</span>
+                        <a href="{{ route('report.booking') }}" class="nav-link ">
+                            <span class="title">Bookings</span>
                         </a>
                     </li>
                     <li class="nav-item  ">
-                        <a href="elements_cards.html" class="nav-link ">
-                            <span class="title">Monthly Analysis</span>
+                        <a href="{{ route('report.inventory') }}" class="nav-link ">
+                            <span class="title">Inventory</span>
                         </a>
                     </li>
                 </ul>

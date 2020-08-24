@@ -3867,6 +3867,38 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3892,12 +3924,14 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
         nurses: [],
         machines: []
       },
-      time: null
+      time: null,
+      date: moment().format('Y-MM-D')
     };
   },
   mounted: function mounted() {
     this.fetchPersonnel();
     this.fetchPersonnelsThatHasSchedule();
+    this.fetchMachinesThatHasSchedule();
   },
   methods: {
     fetchPersonnelsThatHasSchedule: function fetchPersonnelsThatHasSchedule() {
@@ -3915,13 +3949,22 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
         return console.log(error);
       });
     },
-    fetchPersonnel: function fetchPersonnel() {
+    fetchMachinesThatHasSchedule: function fetchMachinesThatHasSchedule() {
       var _this2 = this;
 
+      this.$http.get('api/machines/fetch-machines-that-has-schedule').then(function (response) {
+        return _this2.assigned_machines = response.data.machines;
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    fetchPersonnel: function fetchPersonnel() {
+      var _this3 = this;
+
       this.$http.all([this.$http.get('api/personnels/fetch-all-doctors'), this.$http.get('api/personnels/fetch-all-nurses'), this.$http.get('api/machines')]).then(this.$http.spread(function (request_one, request_two, request_three) {
-        _this2.doctors = request_one.data.doctors;
-        _this2.nurses = request_two.data.nurses;
-        _this2.machines = request_three.data.machines;
+        _this3.doctors = request_one.data.doctors;
+        _this3.nurses = request_two.data.nurses;
+        _this3.machines = request_three.data.machines;
       }))["catch"](function (error) {
         return console.log(error);
       });
@@ -3949,27 +3992,28 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
       }
     },
     searchPatient: function searchPatient() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.$http.post('api/search-patient', {
         name: this.form.patient
       }).then(function (response) {
-        return _this3.patients = response.data.patients;
+        return _this4.patients = response.data.patients;
       })["catch"](function (error) {
         return console.log(error);
       });
     },
     saveTesting: function saveTesting() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.$http.post('api/schedules/create-new-schedule', this.form).then(function (response) {
-        _this4.$vs.notify({
+        _this5.$vs.notify({
           title: 'Save Schedule',
           text: 'Save schedule successfully',
           color: 'success'
         });
 
-        _this4.form = _objectSpread(_objectSpread({}, _this4.form), {}, {
+        _this5.date = _this5.form.date;
+        _this5.form = _objectSpread(_objectSpread({}, _this5.form), {}, {
           date: null,
           time_from: '',
           time_to: '',
@@ -3980,9 +4024,9 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
           machines: []
         });
 
-        _this4.fetchPersonnelsThatHasSchedule();
-      }).then(function (response) {
-        return console.log(response.data);
+        _this5.fetchPersonnelsThatHasSchedule();
+
+        _this5.fetchMachinesThatHasSchedule();
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -3992,6 +4036,68 @@ var moment = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js"
         console.log(schedule.patients.fname);
         console.log(schedule.patients.mname);
         console.log(schedule.patients.lname);
+      });
+    },
+    previousDay: function previousDay() {
+      var _this6 = this;
+
+      this.date = moment(this.date, 'Y-MM-DD').subtract(1, 'days').format('Y-MM-DD');
+      this.$http.all([this.$http.post('api/personnels/fetch-personnels-that-has-schedule-by-date', {
+        date: this.date
+      }), this.$http.post('api/machines/fetch-machines-that-has-schedule-by-date', {
+        date: this.date
+      })]).then(this.$http.spread(function (response, machines) {
+        var personnels = response.data.personnels;
+        _this6.assigned_doctors = personnels.filter(function (personnel) {
+          return personnel.personnel_type === 'Doctor';
+        });
+        _this6.assigned_nurses = personnels.filter(function (personnel) {
+          return personnel.personnel_type === 'Nurse';
+        });
+        _this6.assigned_machines = machines.data.machines;
+      }))["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    nextDay: function nextDay() {
+      var _this7 = this;
+
+      this.date = moment(this.date, 'Y-MM-DD').add(1, 'days').format('Y-MM-DD');
+      this.$http.all([this.$http.post('api/personnels/fetch-personnels-that-has-schedule-by-date', {
+        date: this.date
+      }), this.$http.post('api/machines/fetch-machines-that-has-schedule-by-date', {
+        date: this.date
+      })]).then(this.$http.spread(function (response, machines) {
+        var personnels = response.data.personnels;
+        _this7.assigned_doctors = personnels.filter(function (personnel) {
+          return personnel.personnel_type === 'Doctor';
+        });
+        _this7.assigned_nurses = personnels.filter(function (personnel) {
+          return personnel.personnel_type === 'Nurse';
+        });
+        _this7.assigned_machines = machines.data.machines;
+      }))["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    changedDate: function changedDate() {
+      var _this8 = this;
+
+      this.$http.all([this.$http.post('api/personnels/fetch-personnels-that-has-schedule-by-date', {
+        date: this.date
+      }), this.$http.post('api/machines/fetch-machines-that-has-schedule-by-date', {
+        date: this.date
+      })]).then(this.$http.spread(function (response, machines) {
+        var personnels = response.data.personnels;
+        _this8.assigned_doctors = personnels.filter(function (personnel) {
+          return personnel.personnel_type === 'Doctor';
+        });
+        _this8.assigned_nurses = personnels.filter(function (personnel) {
+          return personnel.personnel_type === 'Nurse';
+        });
+        _this8.assigned_machines = machines.data.machines;
+      }))["catch"](function (error) {
+        return console.log(error);
       });
     }
   }
@@ -53527,11 +53633,87 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "portlet-body" }, [
             _c("div", { staticClass: "row" }, [
-              _vm._m(1),
+              _c(
+                "div",
+                { staticClass: "col-md-12 d-flex justify-content-center my-1" },
+                [
+                  _c("div", [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: {
+                          "data-toggle": "modal",
+                          "data-target": "#myModal"
+                        }
+                      },
+                      [_vm._v("Add Schedule")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: { click: _vm.previousDay }
+                      },
+                      [_vm._v("Previous Day")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        on: { click: _vm.nextDay }
+                      },
+                      [_vm._v("Next Day")]
+                    )
+                  ]),
+                  _vm._v(
+                    "\n                           \n                          "
+                  ),
+                  _c("div", { staticClass: "input-group" }, [
+                    _c(
+                      "span",
+                      {
+                        staticClass: "input-group-addon",
+                        attrs: { id: "basic-addon1" }
+                      },
+                      [_vm._v("Date")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.date,
+                          expression: "date"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "date",
+                        placeholder: "Username",
+                        "aria-describedby": "basic-addon1"
+                      },
+                      domProps: { value: _vm.date },
+                      on: {
+                        change: _vm.changedDate,
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.date = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ]
+              ),
               _vm._v(" "),
               _c("div", { staticClass: "col-md-12" }, [
                 _c("table", { staticClass: "table table-bordered my-1" }, [
-                  _vm._m(2),
+                  _vm._m(1),
                   _vm._v(" "),
                   _c(
                     "tbody",
@@ -53686,7 +53868,7 @@ var render = function() {
                                   : _c(
                                       "td",
                                       { key: index, staticClass: "bg-success" },
-                                      [_vm._m(3, true)]
+                                      [_vm._m(2, true)]
                                     )
                               ]
                             })
@@ -53768,6 +53950,165 @@ var render = function() {
                                                 [
                                                   _vm._l(
                                                     nurse.schedules,
+                                                    function(schedule) {
+                                                      return [
+                                                        _vm
+                                                          .moment(
+                                                            schedule.time_to,
+                                                            "h:m a"
+                                                          )
+                                                          .diff(
+                                                            _vm
+                                                              .moment(
+                                                                "7:00:00",
+                                                                "h:m a"
+                                                              )
+                                                              .add(
+                                                                index,
+                                                                "hours"
+                                                              )
+                                                          ) >= 0 &&
+                                                        _vm
+                                                          .moment(
+                                                            "7:00:00",
+                                                            "h:m a"
+                                                          )
+                                                          .add(index, "hours")
+                                                          .diff(
+                                                            _vm.moment(
+                                                              schedule.time_from,
+                                                              "h:m a"
+                                                            )
+                                                          ) >= 0
+                                                          ? [
+                                                              _c(
+                                                                "li",
+                                                                {
+                                                                  key:
+                                                                    schedule.id
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "\n                                                                  " +
+                                                                      _vm._s(
+                                                                        schedule
+                                                                          .patients
+                                                                          .fname
+                                                                      ) +
+                                                                      " " +
+                                                                      _vm._s(
+                                                                        schedule
+                                                                          .patients
+                                                                          .mname
+                                                                      ) +
+                                                                      " " +
+                                                                      _vm._s(
+                                                                        schedule
+                                                                          .patients
+                                                                          .lname
+                                                                      ) +
+                                                                      "\n                                                                  "
+                                                                  )
+                                                                ]
+                                                              )
+                                                            ]
+                                                          : _vm._e()
+                                                      ]
+                                                    }
+                                                  )
+                                                ],
+                                                2
+                                              )
+                                            ]
+                                          )
+                                        ])
+                                      ]
+                                    )
+                                  : _c(
+                                      "td",
+                                      { key: index, staticClass: "bg-success" },
+                                      [_vm._m(3, true)]
+                                    )
+                              ]
+                            })
+                          ],
+                          2
+                        )
+                      }),
+                      _vm._v(" "),
+                      _vm._l(_vm.assigned_machines, function(machine) {
+                        return _c(
+                          "tr",
+                          { key: machine.id },
+                          [
+                            _c("td", [_vm._v(_vm._s(machine.name))]),
+                            _vm._v(" "),
+                            _vm._l(10, function(index) {
+                              return [
+                                machine.schedules.find(function(schedule) {
+                                  return (
+                                    _vm
+                                      .moment(schedule.time_to, "h:m a")
+                                      .diff(
+                                        _vm
+                                          .moment("7:00:00", "h:m a")
+                                          .add(index, "hours")
+                                      ) >= 0 &&
+                                    _vm
+                                      .moment("7:00:00", "h:m a")
+                                      .add(index, "hours")
+                                      .diff(
+                                        _vm.moment(schedule.time_from, "h:m a")
+                                      ) >= 0
+                                  )
+                                })
+                                  ? _c(
+                                      "td",
+                                      { key: index, staticClass: "bg-danger" },
+                                      [
+                                        _c("div", { staticClass: "row m-0" }, [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "col-md-12 d-flex justify-content-end p-0"
+                                            },
+                                            [
+                                              _c(
+                                                "a",
+                                                {
+                                                  staticClass:
+                                                    "text-primary information",
+                                                  on: {
+                                                    click: function($event) {
+                                                      return _vm.scheduleInformation(
+                                                        machine
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [
+                                                  _c("i", {
+                                                    staticClass:
+                                                      "fa fa-info-circle"
+                                                  })
+                                                ]
+                                              )
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "col-md-12 d-flex justify-content-center align-items-center"
+                                            },
+                                            [
+                                              _c(
+                                                "ul",
+                                                [
+                                                  _vm._l(
+                                                    machine.schedules,
                                                     function(schedule) {
                                                       return [
                                                         _vm
@@ -54458,33 +54799,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "col-md-12 d-flex justify-content-center my-1" },
-      [
-        _c("div", [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary",
-              attrs: { "data-toggle": "modal", "data-target": "#myModal" }
-            },
-            [_vm._v("Add Schedule")]
-          ),
-          _vm._v(" "),
-          _c("button", { staticClass: "btn btn-primary" }, [
-            _vm._v("Previous Day")
-          ]),
-          _vm._v(" "),
-          _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Next Day")])
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
         _c("th"),
@@ -54509,6 +54823,25 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("5 PM")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row m-0" }, [
+      _c(
+        "div",
+        {
+          staticClass:
+            "col-md-12 d-flex justify-content-center align-items-center"
+        },
+        [
+          _vm._v(
+            "\n                                                      Available\n                                                  "
+          )
+        ]
+      )
     ])
   },
   function() {

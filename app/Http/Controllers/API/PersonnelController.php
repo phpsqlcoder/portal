@@ -100,4 +100,11 @@ class PersonnelController extends Controller
         return response()->json(compact('personnels'));
     }
 
+    public function fetchPersonnelsThatHasScheduleByDate(Request $request)
+    {
+        $personnels = $this->personnel_repository->fetchPersonnelsThatHasScheduleByDate($request->all());
+
+        return response()->json(compact('personnels'));
+    }
+
 }
