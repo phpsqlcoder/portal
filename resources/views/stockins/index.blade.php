@@ -14,7 +14,7 @@
     @endif
     <meta name="_token" content="{{ csrf_token() }}"/>
     <div class="row">
-        <div class="col-md-12 id="enterform">
+        <div class="col-md-12" id="enterform">
 
             <div class="modal fade" id="add_div" tabindex="-1" role="basic" aria-hidden="true">
                 <form role="form" method="post" action="/stockin">

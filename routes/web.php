@@ -40,3 +40,12 @@ Route::get('/transaction/patient/prescription/{id}', 'TransactionController@pres
 Route::get('/transaction/patient/receipt/{id}', 'TransactionController@receipt');
 
 Route::resource('schedules', 'ScheduleController');
+
+// Ryan
+Route::get('/receiving/list', 'ReceivingController@index')->name('receiving.list');
+Route::get('/receiving/create', 'ReceivingController@create')->name('receiving.create');
+Route::post('/receiving-store','ReceivingController@store')->name('receiving.store');
+
+Route::get('/guest-form/create',function(){
+	return view('guest.create');
+})->name('receiving.create');

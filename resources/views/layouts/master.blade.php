@@ -18,7 +18,7 @@
         <link href="{{ asset('/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css') }}" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
         @yield('pagecss')
-        <link rel="stylesheet" href="{{ asset(mix('css/style.css')) }}">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         <!-- BEGIN THEME GLOBAL STYLES -->
         <link href="{{ asset('/assets/global/css/components.min.css') }}" rel="stylesheet" id="style_components" type="text/css" />
         <link href="{{ asset('/assets/global/css/plugins.min.css') }}" rel="stylesheet" type="text/css" />

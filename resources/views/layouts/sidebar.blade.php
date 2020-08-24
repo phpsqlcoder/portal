@@ -57,7 +57,7 @@
                         </a>
                     </li>
                     <li class="nav-item  ">
-                        <a href="/stockin" class="nav-link ">
+                        <a href="/receiving/list" class="nav-link ">
                             <span class="title">Stock In</span>
                         </a>
                     </li>
@@ -82,13 +82,13 @@
                 </a>
                 <ul class="sub-menu">
                     <li class="nav-item  ">
-                        <a href="elements_steps.html" class="nav-link ">
-                            <span class="title">Income Report</span>
+                        <a href="{{ route('report.patients') }}" class="nav-link ">
+                            <span class="title">Patients</span>
                         </a>
                     </li>
                     <li class="nav-item  ">
-                        <a href="elements_lists.html" class="nav-link ">
-                            <span class="title">Issuance Report</span>
+                        <a href="{{ route('report.receiving') }}" class="nav-link ">
+                            <span class="title">Receiving</span>
                         </a>
                     </li>
                     <li class="nav-item  ">
@@ -107,6 +107,13 @@
                         </a>
                     </li>
                 </ul>
+            </li>
+            <li class="nav-item  ">
+                <a href="/guest-form" class="nav-link nav-toggle">
+                    <i class="fa fa-user"></i>
+                    <span class="title">Guest Form</span>                  
+                </a>
+               
             </li>
             
           
