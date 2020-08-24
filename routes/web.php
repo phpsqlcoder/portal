@@ -51,6 +51,6 @@ Route::get('/guest-form/create',function(){
 })->name('receiving.create');
 
 
-Route::resource('schedules', 'ScheduleController');
+
 
 

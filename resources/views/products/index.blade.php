@@ -13,6 +13,7 @@
             </ul>
         </div>
     @endif
+    
     <meta name="_token" content="{{ csrf_token() }}"/>
     <div class="row">
         <div class="col-md-12" id="enterform">
@@ -155,6 +156,7 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Brand</th>
+                                <th>Inventory</th>
                              <!--    <th style="text-align:right">Cost</th> -->
                                 <th style="text-align:right">Price</th>
                              <!--    <th style="text-align:right">Percentage</th> -->
@@ -166,6 +168,7 @@
                                 <td>{{ $product->id }}</td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->brand }}</td>
+                                <td>{{ $product->Inventory }}</td>
                             <!--     <td align="right">{{ number_format($product->cost ,2)}}</td> -->
                                 <td align="right">{{ number_format($product->price,2) }}</td>
                               <!--   <td align="right">{{ $product->percentage }}</td> -->

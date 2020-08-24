@@ -25,7 +25,14 @@
                 </a>
                 
             </li>
-			<li class="nav-item  ">
+            <li class="nav-item  ">
+                <a href="{{ route('patients.create') }}" class="nav-link">
+                    <i class="icon-users"></i>
+                    <span class="title">Create New Patient</span>                   
+                </a>
+               
+            </li>
+			<li class="nav-item  " style="display: none;">
                 <a href="/patients_today" class="nav-link">
                     <i class="icon-users"></i>
                     <span class="title">Patients <span class="badge badge-danger">Today</span></span>                   

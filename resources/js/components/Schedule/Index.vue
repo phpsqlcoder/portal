@@ -204,7 +204,7 @@
                                 <label class="my-1">Assigned Doctor/s:</label>
                                 <div>
                                     <ul>
-                                        <li v-for="(doctor, index) in form.doctors" :key="index">{{index+1}}. {{doctor.name}} <a class="text-danger mx-1" data-toggle="tooltip" data-placement="top" title="Tooltip on top"><span>Remove</span></a></li>
+                                        <li v-for="(doctor, index) in form.doctors" :key="index">{{index+1}}. {{doctor.name}} <a class="text-danger mx-1" data-toggle="tooltip" data-placement="top" title="Tooltip on top"></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -222,7 +222,7 @@
                                 <label class="my-1">Assigned Nurse/s:</label>
                                 <div>
                                     <ul>
-                                        <li v-for="(nurse, index) in form.nurses" :key="index">{{index+1}}. {{nurse.name}} <a class="text-danger mx-1" data-toggle="tooltip" data-placement="top" title="Tooltip on top"><span>Remove</span></a></li>
+                                        <li v-for="(nurse, index) in form.nurses" :key="index">{{index+1}}. {{nurse.name}} <a class="text-danger mx-1" data-toggle="tooltip" data-placement="top" title="Tooltip on top"></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -240,7 +240,7 @@
                                 <label class="my-1">Assigned Machine/s:</label>
                                 <div>
                                     <ul>
-                                        <li v-for="(madchine, index) in form.machines" :key="index">{{index+1}}. {{madchine.name}} <a class="text-danger mx-1" data-toggle="tooltip" data-placement="top" title="Tooltip on top"><span>Remove</span></a></li>
+                                        <li v-for="(madchine, index) in form.machines" :key="index">{{index+1}}. {{madchine.name}} <a class="text-danger mx-1" data-toggle="tooltip" data-placement="top" title="Tooltip on top"></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -294,8 +294,8 @@ export default {
             this.$http.get('api/personnels/fetch-personnels-that-has-schedule')
             .then(response => {
                 var personnels = response.data.personnels
-                this.assigned_doctors = personnels.filter(personnel => (personnel.personnel_type === 'Doctor'))
-                this.assigned_nurses = personnels.filter(personnel => (personnel.personnel_type === 'Nurse'))
+                this.assigned_doctors = personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'doctor'))
+                this.assigned_nurses = personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'nurse'))
             })
             .catch(error => console.log(error))
         },
