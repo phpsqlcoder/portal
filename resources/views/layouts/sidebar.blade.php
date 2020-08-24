@@ -115,7 +115,7 @@
                 </ul>
             </li>
             <li class="nav-item  ">
-                <a href="/guest-form" class="nav-link nav-toggle">
+                <a href="/guest-form/create" target="_blank" class="nav-link nav-toggle">
                     <i class="fa fa-user"></i>
                     <span class="title">Guest Form</span>                  
                 </a>

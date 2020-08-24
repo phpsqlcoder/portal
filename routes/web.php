@@ -50,3 +50,8 @@ Route::post('/receiving-store','ReceivingController@store')->name('receiving.sto
 Route::get('/guest-form/create',function(){
 	return view('guest.create');
 })->name('receiving.create');
+
+
+Route::resource('schedules', 'ScheduleController');
+
+
