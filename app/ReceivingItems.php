@@ -13,4 +13,9 @@ class ReceivingItems extends Model
     {
     	return $this->belongsTo('App\Products','product_id');
     }
+
+    public function receiving_detail()
+    {
+    	return $this->belongsTo('App\Receiving','receiving_id');
+    }
 }
