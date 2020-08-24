@@ -16,6 +16,16 @@ class MachineRepository {
     {
         return $this->machine->all();
     }
+    
+    public function store($data)
+    {
+        try {
+            return $this->machine->create($data);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $exception;
+        }
+    }
 
     public function fetchMachine($machine)
     {

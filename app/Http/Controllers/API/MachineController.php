@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\MachineRepository;
+use App\Http\Requests\MachineRequest;
 use App\Http\Services\MachineService;
 
 class MachineController extends Controller
@@ -35,9 +36,14 @@ class MachineController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MachineRequest $request)
     {
-        //
+        $this->machine_repository->store($request->validated());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Machine saved successfully'
+        ]);
     }
 
     /**

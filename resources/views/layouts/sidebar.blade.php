@@ -45,6 +45,12 @@
                 </a>
             </li>
             <li class="nav-item  ">
+                <a href="{{ route('machines.index') }}" class="nav-link">
+                    <i class="fa fa-cogs"></i>
+                    <span class="title">Machines</span>                   
+                </a>
+            </li>
+            <li class="nav-item  ">
                 <a href="{{ route('schedules.index') }}" class="nav-link">
                     <i class="icon-calendar"></i>
                     <span class="title">Schedule</span>                   
