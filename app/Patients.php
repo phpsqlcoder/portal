@@ -9,6 +9,7 @@ use Carbon\Carbon;
 class Patients extends Model
 {
     use SoftDeletes; 
+
     protected $dates = ['deleted_at'];
 
     protected $fillable = ['fname', 'lname','mname','extname','gender','birthdate','address','contact_no','civil_status','occupation','referral','images','user_id'];
@@ -94,5 +95,4 @@ class Patients extends Model
     {
         return true;
     }
-       
 }

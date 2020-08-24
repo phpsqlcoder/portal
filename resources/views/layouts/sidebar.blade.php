@@ -82,12 +82,12 @@
                 </a>
                 <ul class="sub-menu">
                     <li class="nav-item  ">
-                        <a href="{{ route('report.patients') }}" class="nav-link ">
+                        <a href="" class="nav-link ">
                             <span class="title">Patients</span>
                         </a>
                     </li>
                     <li class="nav-item  ">
-                        <a href="{{ route('report.receiving') }}" class="nav-link ">
+                        <a href="" class="nav-link ">
                             <span class="title">Receiving</span>
                         </a>
                     </li>
