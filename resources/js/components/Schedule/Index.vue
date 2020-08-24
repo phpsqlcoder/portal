@@ -344,7 +344,24 @@ export default {
         },
         saveTesting() {
             this.$http.post('api/schedules/create-new-schedule', this.form)
-            .then(response => console.log(response.data))
+            .then(response => {
+                this.$vs.notify({
+                    title:'Save Schedule',
+                    text:'Save schedule successfully',
+                    color:'success'
+                })
+                this.form = {...this.form,
+                    date: null,
+                    time_from: '',
+                    time_to: '',
+                    patient: null,
+                    procedure: null,
+                    doctors: [],
+                    nurses: [],
+                    machines: [],
+                }
+                this.fetchPersonnelsThatHasSchedule()
+            })
             .catch(error => console.log(error))
         },
         scheduleInformation(doctor) {
