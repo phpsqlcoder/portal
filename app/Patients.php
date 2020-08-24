@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 class Patients extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes; 
     protected $dates = ['deleted_at'];
 
     protected $fillable = ['fname', 'lname','mname','extname','gender','birthdate','address','contact_no','civil_status','occupation','referral','images','user_id'];
@@ -89,4 +89,10 @@ class Patients extends Model
     {
         return $this->hasMany('App\Schedule', 'patient_id');
     }
+
+    public function x()
+    {
+        return true;
+    }
+       
 }
