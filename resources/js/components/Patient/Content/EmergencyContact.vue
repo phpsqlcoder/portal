@@ -20,7 +20,8 @@
             <div class="row">
                 <div class="col-md-12 button">
                     <button class="btn btn-primary" @click="previousPage">Previous</button>
-                    <button class="btn btn-primary">Next</button>
+                    <button v-if="host === '/patient/signup'" class="btn btn-primary">Submit</button>
+                    <button v-else class="btn btn-primary">Next</button>
                 </div>
             </div>
         </form>
@@ -35,12 +36,21 @@ export default {
             required: true
         }
     },
+    data() {
+        return {
+            host: window.location.pathname
+        }
+    },
     methods: {
         previousPage() {
             this.$emit('clickedPrevious')
         },
         submitEmergencyContactInformation() {
-            this.$emit('submit')
+            if(this.host === '/patient/signup') {
+                this.$emit('submit', 'done')
+            } else {
+                this.$emit('submit')
+            }
         }
     }
 }

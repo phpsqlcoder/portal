@@ -42,6 +42,7 @@ Route::get('/transaction/patient/receipt/{id}', 'TransactionController@receipt')
 Route::resource('schedules', 'ScheduleController');
 Route::resource('personnels', 'PersonnelController');
 Route::resource('machines', 'MachineController');
+Route::get('patient/signup', 'PatientsController@signup')->name('patient.sign_up');
 
 // Ryan
 Route::get('/receiving/list', 'ReceivingController@index')->name('receiving.list');

@@ -53,10 +53,10 @@ class PatientController extends Controller
         $this->patient_details_repository->store($request->all(), $patient);
 
 		$this->additional_details_repository->store($request->all(), $patient);
-
         return response()->json([
             'success' => true,
-            'message' => 'Patient added successfully'
+            'message' => 'Patient added successfully',
+            'patient' => $patient,
         ]);
     }
 
