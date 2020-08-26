@@ -337,8 +337,8 @@ export default {
             this.$http.get('api/personnels/fetch-personnels-that-has-schedule')
             .then(response => {
                 var personnels = response.data.personnels
-                this.assigned_doctors = personnels.filter(personnel => (personnel.personnel_type === 'Doctor'))
-                this.assigned_nurses = personnels.filter(personnel => (personnel.personnel_type === 'Nurse'))
+                this.assigned_doctors = personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'doctor'))
+                this.assigned_nurses = personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'nurse'))
             })
             .catch(error => console.log(error))
         },

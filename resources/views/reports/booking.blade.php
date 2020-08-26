@@ -11,7 +11,7 @@
 @section('content')
     <div class="container">
         <br>
-        <div class="text-center"><h5>Receiving</h5></div><br>
+        <div class="text-center"><h5>Bookings</h5></div><br>
         <div class="row">
             <div class="col-md-12">
                 <form>
@@ -34,23 +34,23 @@
                     <table id="example" class="display nowrap" style="width:100%;font: normal 13px/150% Arial, sans-serif, Helvetica;">
                         <thead>
                         <tr>
-                            <th>Transaction Number</th>
-                            <th>Supplier</th>
-                            <th>Item Name</th>
-                            <th>Qty</th>
-                            <th>Price</th>
-                            <th>Date</th>
+                            <th>Patient Name</th>
+                            <th>Doctor</th>
+                            <th>Nurse</th>
+                            <th>Machine</th>
+                            <th>From</th>
+                            <th>To</th>
                         </tr>
                         </thead>
                         <tbody>
                         @forelse($rs as $r)
                             <tr style="text-align: left">
-                                <td>{{ $r->receiving_detail->receipt_no }}</td>
-                                <td>{{ $r->receiving_detail->supplier_id }}</td>
-                                <td>{{ $r->item_detail->name }}</td>
-                                <td>{{ $r->qty }}</td>
-                                <td>{{ $r->cost }}</td>
-                                <td>{{ date('m-d-Y h:i A',strtotime($r->created_at)) }}</td>
+                                <td>{{ $r->patient->fullname }}</td>
+                                <td>{{ $r->personnels->name }}</td>
+                                <td></td>
+                                <td>{{ $r->machine->name }}</td>
+                                <td>{{ date('m-d-Y',strtotime($r->date)) }} {{ $r->time_from }}</td>
+                                <td>{{ date('m-d-Y',strtotime($r->date)) }} {{ $r->time_to }}</td>
                             </tr>
                         @empty
                         @endforelse

@@ -11,21 +11,7 @@
 @section('content')
     <div class="container">
         <br>
-        <div class="text-center"><h5>Receiving</h5></div><br>
-        <div class="row">
-            <div class="col-md-12">
-                <form>
-                <table width="100%" style="font-size:12px;font-family:Arial;">
-                    <tr>
-                        <td>Start: <input type="date" name="startdate" class="form-control input-sm " value="{{ request('startdate') }}"></td>
-                        <td>End: <input type="date" name="enddate" class="form-control input-sm " value="{{ request('enddate') }}"></td>                        
-                        <td><br><input type="submit" value="Generate" class="btn btn-md btn-success"></td>
-                    </tr>
-                </table>
-                </form>
-               
-            </div>
-        </div>
+        <div class="text-center"><h5>Inventory</h5></div><br>
         <br><br>
         @if(isset($rs))
             <div class="row row-sm">
@@ -34,23 +20,19 @@
                     <table id="example" class="display nowrap" style="width:100%;font: normal 13px/150% Arial, sans-serif, Helvetica;">
                         <thead>
                         <tr>
-                            <th>Transaction Number</th>
-                            <th>Supplier</th>
-                            <th>Item Name</th>
-                            <th>Qty</th>
+                            <th>Item Code</th>
+                            <th>Name</th>
+                            <th>Inventory</th>
                             <th>Price</th>
-                            <th>Date</th>
                         </tr>
                         </thead>
                         <tbody>
                         @forelse($rs as $r)
                             <tr style="text-align: left">
-                                <td>{{ $r->receiving_detail->receipt_no }}</td>
-                                <td>{{ $r->receiving_detail->supplier_id }}</td>
+                                <td>{{ $r->item_detail->id }}</td>
                                 <td>{{ $r->item_detail->name }}</td>
-                                <td>{{ $r->qty }}</td>
+                                <td>0</td>
                                 <td>{{ $r->cost }}</td>
-                                <td>{{ date('m-d-Y h:i A',strtotime($r->created_at)) }}</td>
                             </tr>
                         @empty
                         @endforelse

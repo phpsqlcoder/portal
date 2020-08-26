@@ -25,7 +25,14 @@
                 </a>
                 
             </li>
-			<li class="nav-item  ">
+            <li class="nav-item  ">
+                <a href="{{ route('patients.create') }}" class="nav-link">
+                    <i class="icon-users"></i>
+                    <span class="title">Create New Patient</span>                   
+                </a>
+               
+            </li>
+			<li class="nav-item  " style="display: none;">
                 <a href="/patients_today" class="nav-link">
                     <i class="icon-users"></i>
                     <span class="title">Patients <span class="badge badge-danger">Today</span></span>                   
@@ -93,29 +100,29 @@
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
-                    {{-- <li class="nav-item  ">
-                        <a href="{{ route('report.patients') }}" class="nav-link ">
+                    <li class="nav-item  ">
+                        <a href="" class="nav-link ">
                             <span class="title">Patients</span>
                         </a>
                     </li>
                     <li class="nav-item  ">
-                        <a href="{{ route('report.receiving') }}" class="nav-link ">
+                        <a href="" class="nav-link ">
                             <span class="title">Receiving</span>
                         </a>
                     </li> --}}
                     <li class="nav-item  ">
-                        <a href="elements_ribbons.html" class="nav-link ">
-                            <span class="title">Top Services</span>
+                        <a href="{{ route('report.prescription') }}" class="nav-link ">
+                            <span class="title">Prescription</span>
                         </a>
                     </li>
                     <li class="nav-item  ">
-                        <a href="elements_overlay.html" class="nav-link ">
-                            <span class="title">Top Items</span>
+                        <a href="{{ route('report.booking') }}" class="nav-link ">
+                            <span class="title">Bookings</span>
                         </a>
                     </li>
                     <li class="nav-item  ">
-                        <a href="elements_cards.html" class="nav-link ">
-                            <span class="title">Monthly Analysis</span>
+                        <a href="{{ route('report.inventory') }}" class="nav-link ">
+                            <span class="title">Inventory</span>
                         </a>
                     </li>
                 </ul>

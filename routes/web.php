@@ -45,15 +45,25 @@ Route::resource('machines', 'MachineController');
 Route::get('patient/signup', 'PatientsController@signup')->name('patient.sign_up');
 
 // Ryan
+
+// Reports
+	Route::get('/report/patients','ReportController@patients')->name('report.patients');
+	Route::get('/report/receiving','ReportController@receiving')->name('report.receiving');
+	Route::get('/report/prescription','ReportController@prescription')->name('report.prescription');
+	Route::get('/report/bookings','ReportController@booking')->name('report.booking');
+	Route::get('/report/inventory','ReportController@inventory')->name('report.inventory');
+//
+
 Route::get('/receiving/list', 'ReceivingController@index')->name('receiving.list');
 Route::get('/receiving/create', 'ReceivingController@create')->name('receiving.create');
 Route::post('/receiving-store','ReceivingController@store')->name('receiving.store');
 
-Route::get('/guest-form/create',function(){
-	return view('guest.create');
-})->name('receiving.create');
+
+// Route::get('/guest-form/create',function(){
+// 	return view('guest.create');
+// })->name('receiving.create');
 
 
-Route::resource('schedules', 'ScheduleController');
+
 
 

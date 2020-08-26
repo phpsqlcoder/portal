@@ -31,4 +31,16 @@ class transaction_header extends Model
 	public function patient(){
     	return $this->belongsTo('App\Patients');
     }
+
+    public static function last_visit($patientId)
+    {
+        $qry = transaction_header::where('patient_id',$patientId);
+
+        if($qry->count() > 0){
+            $rs = $qry->latest()->first();
+            return $rs->visit_date;
+        } else {
+           return false;
+        }  
+    }
 }
