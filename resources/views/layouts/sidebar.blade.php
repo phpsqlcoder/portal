@@ -128,7 +128,7 @@
                 </ul>
             </li>
             <li class="nav-item  ">
-                <a href="/guest-form/create" target="_blank" class="nav-link nav-toggle">
+                <a href="{{ route('patient.sign_up') }}" target="_blank" class="nav-link nav-toggle">
                     <i class="fa fa-user"></i>
                     <span class="title">Guest Form</span>                  
                 </a>
