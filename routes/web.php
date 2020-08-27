@@ -57,7 +57,7 @@ Route::get('patient/signup', 'PatientsController@signup')->name('patient.sign_up
 	Route::get('/receiving/list', 'ReceivingController@index')->name('receiving.list');
 	Route::get('/receiving/create', 'ReceivingController@create')->name('receiving.create');
 	Route::post('/receiving-store','ReceivingController@store')->name('receiving.store');
-	Route::get('.download-attachment/{id}/{filename}','ReceivingController@download')->name('download.attachment');
+	Route::get('/download-attachment/{id}/{filename}','ReceivingController@download')->name('download.attachment');
 
 	Route::get('/issuance/list', 'IssuanceController@index')->name('issuance.index');
 	Route::get('/issuance/create', 'IssuanceController@create')->name('issuance.create');
