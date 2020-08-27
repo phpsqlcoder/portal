@@ -20,6 +20,6 @@ class Schedule extends Model
 
     public function machines()
     {
-        return $this->belongsToMany('App\Machines');
+        return $this->belongsToMany('App\Machine');
     }
 }

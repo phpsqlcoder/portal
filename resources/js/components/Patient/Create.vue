@@ -1,5 +1,5 @@
 <template>
-    <div class="row patients-create">
+    <div class="row patients-create m-0">
         <div class="col-md-12">
                 <div class="portlet-body">
                     <div class="portlet light ">
@@ -12,14 +12,22 @@
                         </div>
                         <div class="portlet-body">
                             <div class="form-body">
-                                <div class="page-title">
+                                <div class="page-title" v-if="!data_submitted">
                                     <h3 class="form-section">{{current_page.name}}</h3>
                                     <!-- <div>
                                         <a @click="previousPage"><i class="icon-arrow-left font-blue"></i></a>
                                         <a @click="nextPage"><i class="icon-arrow-right font-blue"></i></a>
                                     </div> -->
                                 </div>
-                                <template v-for="page in pages">
+                                <div class="row" v-if="!data_submitted">
+                                    <div class="col-md-12 required-text"><span class="text-danger">* Required</span></div>
+                                </div>
+                                <div class="row m-0" v-if="data_submitted">
+                                    <div class="col-md-12">
+                                        <MedicalInformation :patient="patient"/>
+                                    </div>
+                                </div>
+                                <template v-else v-for="page in pages">
                                     <component v-if="current_page.page === page.id" :key="page.id" :is="page.component" :patientInfo="patientInfo" @clickedPrevious="previousPage" @submit="nextPage"></component>
                                 </template>
                             </div>
@@ -37,6 +45,7 @@ import LocalAddress from './Content/LocalAddress'
 import ForeignAddress from './Content/ForeignAddress'
 import EmergencyContact from './Content/EmergencyContact'
 import OtherInfo from './Content/OtherInfo'
+import MedicalInformation from './ProfileContent/MedicalInformation/EditCreate'
     export default {
         props: ['auth'],
         components: {
@@ -44,11 +53,13 @@ import OtherInfo from './Content/OtherInfo'
             LocalAddress,
             ForeignAddress,
             EmergencyContact,
-            OtherInfo
+            OtherInfo,
+            MedicalInformation
         },
         data() {
             return {
                 host: window.location.origin,
+                path: window.location.pathname,
                 current_page: {
                     page: 1,
                     name: 'Patient Information',
@@ -83,19 +94,33 @@ import OtherInfo from './Content/OtherInfo'
                 ],
                 patientInfo: {},
                 error: [],
+                data_submitted: false,
+                patient: {},
             }
         },
-        mounted() {},
+        mounted() {
+            if(this.path === '/patient/signup') {
+                this.pages.pop()
+            }
+        },
         methods: {
             previousPage() {
                 if(this.current_page.page > 1) {
-                    this.current_page.page -= 1
+                    if(this.current_page.page === 4 && this.patientInfo.foreign_address === 'false') {
+                        this.current_page.page -= 2
+                    } else {
+                        this.current_page.page -= 1
+                    }
                     this.current_page = {...this.current_page, name: this.pages[this.current_page.page-1].name, component: this.pages[this.current_page.page-1].component}
                 }
             },
             nextPage(data) {
                 if(this.current_page.page < this.pages.length) {
-                    this.current_page.page += 1
+                    if(this.current_page.page === 2 && this.patientInfo.foreign_address === 'false') {
+                        this.current_page.page += 2
+                    } else {
+                        this.current_page.page += 1
+                    }
                     this.current_page = {...this.current_page, name: this.pages[this.current_page.page-1].name, component: this.pages[this.current_page.page-1].component}
                 } else {
                     this.$swal({
@@ -108,17 +133,28 @@ import OtherInfo from './Content/OtherInfo'
                         confirmButtonText: 'Save'
                         }).then((result) => {
                         if (result.value) {
-                            this.patientInfo['user_id'] = this.auth.id
+                            console.log(this.auth)
+                            this.patientInfo['user_id'] = (this.auth != undefined) ? this.auth.id : null;
                             this.$http.post(`${this.host}/api/patients`, this.patientInfo)
+                            .then(response => this.patient = response.data.patient)
                             .catch(error => console.log(error))
                             this.$swal(
                             'Saved!',
                             'Patient saved successfully.',
                             'success'
                             )
-                            setTimeout(() => {
-                                window.location.href = `${this.host}/patients/create`
-                            }, 1000)
+                            
+                            if(this.auth != undefined) {
+                                setTimeout(() => {
+                                    window.location.href = `${this.host}/patients/create`
+                                }, 1000)
+                            } else {
+                                setTimeout(() => {
+                                    // window.location.href = `${this.host}/patient/signup`
+                                    this.data_submitted = true;
+                                }, 1000)
+                            }
+
                         }
                     })
                 }
@@ -133,5 +169,8 @@ import OtherInfo from './Content/OtherInfo'
         justify-content: space-between;
         align-items: center;
         margin: 0px 10px 20px;
+    }
+    .required-text {
+        margin: 0px 30px;
     }
 </style>

@@ -176,5 +176,10 @@ class PatientsController extends Controller
         }
 
         return back();
-    }
+	}
+	
+	public function signup()
+	{
+		return view('patients.create');
+	}
 }

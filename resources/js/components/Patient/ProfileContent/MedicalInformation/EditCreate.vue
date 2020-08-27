@@ -379,7 +379,11 @@ export default {
                       'success'
                   )
                   setTimeout(() => {
-                      this.$emit('close', response.data.patient)
+                      if(window.location.pathname === '/patient/signup') {
+                          window.location.href = `${this.host}/patient/signup`
+                      } else {
+                        this.$emit('close', response.data.patient)
+                      }
                   }, 1000)
               })
               .catch(error => console.log(error))

@@ -18,8 +18,8 @@ class ScheduleRepository {
     public function store($data)
     {
         try {
-            return Schedule::create([
-                'patient_id' => $data['patient']->id,
+            return $this->schedule->create([
+                'patient_id' => $data['patient']['id'],
                 'date' => $data['date'],
                 'time_from' => $data['time_from'],
                 'time_to' => $data['time_to'],

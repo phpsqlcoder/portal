@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "20098a268bcc358c28d2e0631a11c237",
@@ -1133,6 +1133,7 @@
                 "JWS",
                 "jwt"
             ],
+
             "funding": [
                 {
                     "url": "https://github.com/lcobucci",
@@ -1143,6 +1144,7 @@
                     "type": "patreon"
                 }
             ],
+
             "time": "2020-08-20T13:22:28+00:00"
         },
         {
@@ -1228,12 +1230,15 @@
                 "sftp",
                 "storage"
             ],
+<<<<<<< HEAD
+=======
             "funding": [
                 {
                     "url": "https://offset.earth/frankdejonge",
                     "type": "other"
                 }
             ],
+>>>>>>> cf7aed8b0d7cf9e0eeac7bcb47c106058e8d7639
             "time": "2020-08-23T07:39:11+00:00"
         },
         {

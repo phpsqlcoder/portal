@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\MachineRepository;
+use App\Http\Requests\MachineRequest;
 use App\Http\Services\MachineService;
 
 class MachineController extends Controller
@@ -35,9 +36,14 @@ class MachineController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MachineRequest $request)
     {
-        //
+        $this->machine_repository->store($request->validated());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Machine saved successfully'
+        ]);
     }
 
     /**
@@ -78,5 +84,19 @@ class MachineController extends Controller
     {
         dd($request->all());
         $machines = $this->machine_service->fetchAvailableMachines($request->all());
+    }
+
+    public function fetchMachinesThatHasSchedule()
+    {
+        $machines = $this->machine_repository->fetchMachinesThatHasSchedule();
+
+        return response()->json(compact('machines'));
+    }
+
+    public function fetchMachinesThatHasScheduleByDate(Request $request)
+    {
+        $machines = $this->machine_repository->fetchMachinesThatHasScheduleByDate($request->all());
+
+        return response()->json(compact('machines'));
     }
 }

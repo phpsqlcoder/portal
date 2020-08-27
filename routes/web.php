@@ -40,6 +40,9 @@ Route::get('/transaction/patient/prescription/{id}', 'TransactionController@pres
 Route::get('/transaction/patient/receipt/{id}', 'TransactionController@receipt');
 
 Route::resource('schedules', 'ScheduleController');
+Route::resource('personnels', 'PersonnelController');
+Route::resource('machines', 'MachineController');
+Route::get('patient/signup', 'PatientsController@signup')->name('patient.sign_up');
 
 // Ryan
 
@@ -66,6 +69,6 @@ Route::resource('schedules', 'ScheduleController');
 // })->name('receiving.create');
 
 
-Route::resource('schedules', 'ScheduleController');
+
 
 

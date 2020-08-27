@@ -18,6 +18,7 @@ class CreatePersonnelsTable extends Migration
             $table->string('name');
             $table->string('personnel_type');
             $table->integer('biometric_id');
+            $table->boolean('is_active')->default(1);;
             $table->timestamps();
         });
     }

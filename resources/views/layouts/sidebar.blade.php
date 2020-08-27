@@ -25,7 +25,14 @@
                 </a>
                 
             </li>
-			<li class="nav-item  ">
+            <li class="nav-item  ">
+                <a href="{{ route('patients.create') }}" class="nav-link">
+                    <i class="icon-users"></i>
+                    <span class="title">Create New Patient</span>                   
+                </a>
+               
+            </li>
+			<li class="nav-item  " style="display: none;">
                 <a href="/patients_today" class="nav-link">
                     <i class="icon-users"></i>
                     <span class="title">Patients <span class="badge badge-danger">Today</span></span>                   
@@ -36,6 +43,18 @@
                 <a href="/transaction/all" class="nav-link">
                     <i class="icon-grid"></i>
                     <span class="title">Transactions</span>                   
+                </a>
+            </li>
+            <li class="nav-item  ">
+                <a href="{{ route('personnels.index') }}" class="nav-link">
+                    <i class="icon-users"></i>
+                    <span class="title">Personnels</span>                   
+                </a>
+            </li>
+            <li class="nav-item  ">
+                <a href="{{ route('machines.index') }}" class="nav-link">
+                    <i class="fa fa-cogs"></i>
+                    <span class="title">Machines</span>                   
                 </a>
             </li>
             <li class="nav-item  ">
@@ -90,7 +109,7 @@
                         <a href="" class="nav-link ">
                             <span class="title">Receiving</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="nav-item  ">
                         <a href="{{ route('report.prescription') }}" class="nav-link ">
                             <span class="title">Prescription</span>
@@ -109,7 +128,7 @@
                 </ul>
             </li>
             <li class="nav-item  ">
-                <a href="/guest-form/create" target="_blank" class="nav-link nav-toggle">
+                <a href="{{ route('patient.sign_up') }}" target="_blank" class="nav-link nav-toggle">
                     <i class="fa fa-user"></i>
                     <span class="title">Guest Form</span>                  
                 </a>

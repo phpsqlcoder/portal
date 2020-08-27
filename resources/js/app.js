@@ -33,6 +33,8 @@ Vue.component('patient-create', require('./components/Patient/Create').default);
 Vue.component('patient-profile', require('./components/Patient/Profile').default);
 Vue.component('patient-medical-information', require('./components/Patient/ProfileContent/MedicalInformation').default)
 Vue.component('schedule-index', require('./components/Schedule/Index').default);
+Vue.component('personnel-index', require('./components/Personnel/Index').default);
+Vue.component('machine-index', require('./components/Machine/Index').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
