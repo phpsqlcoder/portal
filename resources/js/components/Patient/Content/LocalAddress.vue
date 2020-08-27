@@ -58,7 +58,7 @@
                             <div class="form-group">
                                 <label class="control-label col-md-2">Telephone No. <span class="text-danger">*</span></label>
                                 <div class="col-md-10">
-                                    <input type="text" name="local_subdivision" class="form-control" v-model="patientInfo['local_telephone_number']" required>
+                                    <input type="text" name="local_subdivision" class="form-control" v-model="patientInfo['contact_number']" required>
                                 </div>
                             </div>
                         </div>

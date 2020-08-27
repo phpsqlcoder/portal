@@ -52,18 +52,18 @@ class PersonnelRepository {
     public function fetchPersonnelsThatHasSchedule()
     {
         return $this->personnel->with(['schedules' => function($query) {
-            $query->with('machines')->where('date', '=', date('Y-m-d'));
+            $query->with(['machines', 'personnels'])->where('date', '=', date('Y-m-d'))->whereIsCancelled(0);
         }, 'schedules.patients'])->whereHas('schedules', function($query) {
-            $query->where('date', '=', date('Y-m-d'));
+            $query->where('date', '=', date('Y-m-d'))->whereIsCancelled(0);
         })->get();
     }
 
     public function fetchPersonnelsThatHasScheduleByDate($request)
     {
         return $this->personnel->with(['schedules' => function($query) use ($request) {
-            $query->with('machines')->where('date', '=', date('Y-m-d', strtotime($request['date'])));
+            $query->with('machines', 'personnels')->where('date', '=', date('Y-m-d', strtotime($request['date'])))->whereIsCancelled(0);
         }, 'schedules.patients'])->whereHas('schedules', function($query) use ($request) {
-            $query->where('date', '=', date('Y-m-d', strtotime($request['date'])));
+            $query->where('date', '=', date('Y-m-d', strtotime($request['date'])))->whereIsCancelled(0);
         })->get();
     }
 

@@ -43,5 +43,7 @@ Route::prefix('machines')->group(function() {
 
 Route::prefix('schedules')->group(function() {
     Route::post('create-new-schedule', 'API\ScheduleController@store');
+    Route::put('/{id}', 'API\ScheduleController@update');
+    Route::put('cancel-schedule/{id}', 'API\ScheduleController@cancelSchedule');
     Route::get('fetch-today-schedule', 'API\ScheduleController@fetchTodaySchedule');
 });

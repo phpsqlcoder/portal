@@ -26,18 +26,21 @@ class ScheduleService {
         $this->machine_repository = $machine_repository;
     }
 
-    public function store($data)
+    public function store($data, $id = null)
     {
-        
         // $patient = $this->patient_repository->getPatientsByName($data['patient']);
-
+        // dd($id);
         $data['time_from'] = date("H:i", strtotime($data['time_from']));
         $data['time_to'] = date("H:i", strtotime($data['time_to']));
         
         // $data['patient'] = $patient[0];
         // dd($data);
 
-        $schedule = $this->schedule_repository->store($data);
+        $schedule = $this->schedule_repository->store($data, $id);
+
+        $schedule->personnels()->detach();
+
+        $schedule->machines()->detach();
 
         foreach ($data['doctors'] as $key => $doctor) {
             $personnel = $this->personnel_repository->fetchPersonnel($doctor);
@@ -58,5 +61,10 @@ class ScheduleService {
         }
 
         return $schedule;
+    }
+
+    public function cancelSchedule($id)
+    {
+        return $this->schedule_repository->cancelSchedule($id);
     }
 }

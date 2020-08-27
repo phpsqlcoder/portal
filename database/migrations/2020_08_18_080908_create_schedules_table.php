@@ -20,6 +20,7 @@ class CreateSchedulesTable extends Migration
             $table->time('time_from');
             $table->time('time_to');
             $table->string('procedure');
+            $table->boolean('is_cancelled');
             $table->timestamps();
 
             $table->foreign('patient_id')->references('id')->on('patients');

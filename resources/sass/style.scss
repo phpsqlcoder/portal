@@ -18,8 +18,20 @@
     margin: 0px 14px;
 }
 
+.mt-1 {
+    margin-top: 14px;
+}
+
+.mb-1 {
+    margin-bottom: 14px;
+}
+
 .d-flex {
     display: flex;
+}
+
+.swal2-container {
+    z-index: 2000000 !important;
 }
 
 .margin-left-40 {
