@@ -15,16 +15,19 @@ class ScheduleRepository {
         $this->schedule = $schedule;
     }
 
-    public function store($data)
+    public function store($data, $id = null)
     {
         try {
-            return $this->schedule->create([
-                'patient_id' => $data['patient']['id'],
-                'date' => $data['date'],
-                'time_from' => $data['time_from'],
-                'time_to' => $data['time_to'],
-                'procedure' => $data['procedure']
-            ]);
+            return $this->schedule->updateOrCreate(
+                ['id' => $id],
+                [
+                    'patient_id' => $data['patient']['id'],
+                    'date' => $data['date'],
+                    'time_from' => $data['time_from'],
+                    'time_to' => $data['time_to'],
+                    'procedure' => $data['procedure'] 
+                ]
+            );
         } catch (Exception $exception) {
             DB::rollBack();
 
@@ -35,7 +38,16 @@ class ScheduleRepository {
     public function fetchTodaySchedule()
     {
         try {
-            return $this->schedule->with('personnels')->where('date', 'LIKE', date('Y-m-d'))->get();
+            return $this->schedule->with('personnels')->where('date', 'LIKE', date('Y-m-d'))->whereIsCancelled(0)->get();
+        } catch (Exception $exception) {
+            return $exception;
+        }
+    }
+
+    public function cancelSchedule($id)
+    {
+        try {
+            return $this->schedule->findorfail($id)->update(['is_cancelled' => 1]);
         } catch (Exception $exception) {
             return $exception;
         }

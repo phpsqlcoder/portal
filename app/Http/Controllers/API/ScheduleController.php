@@ -69,7 +69,7 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->schedule_service->store($request->all(), $id);
     }
 
     /**
@@ -88,5 +88,15 @@ class ScheduleController extends Controller
         $schedules = $this->schedule_repository->fetchTodaySchedule();
         
         return response()->json(compact('schedules'));
+    }
+
+    public function cancelSchedule($id)
+    {
+        $this->schedule_service->cancelSchedule($id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Schedule cancelled successfully'
+        ]);
     }
 }
