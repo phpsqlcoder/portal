@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('page-title')
-	Receiving List
+	Issuance List
 @endsection
 
 @section('content')
@@ -25,35 +25,31 @@
 								<i class="icon-settings font-dark"></i>
 								<span class="caption-subject bold uppercase">List</span>
 							</div>
-							<a href="{{ route('receiving.create') }}" class="btn btn-primary" style="float:right;">Create Receiving</a>
+							<a href="{{ route('issuance.create') }}" class="btn btn-primary" style="float:right;">Create Issuance</a>
 						</div>
 						<div class="portlet-body">
 							<table class="table table-striped table-bordered">
 								<thead>
 									<tr>
-										<th>Receipt Number</th>
-										<th>Supplier</th>								
 										<th>Date</th>
-										<th>Attachment</th>
-										<th>Action</th>
+										<th>Type</th>								
+										<th>Status</th>
+										<th>Purpose</th>
+										<th></th>
 									</tr>
 								</thead>
 								<tbody>
 									@forelse($data as $d)
 										<tr>
-											<td>{{ $d->receipt_no }}</td>
-											<td>{{ $d->supplier_id }}</td>	
-											<td>{{ date('m-d-Y',strtotime($d->created_at)) }}</td>	
+											<td>{{ date('m-d-Y',strtotime($d->issuance_date)) }}</td>
+											<td>{{ $d->type }}</td>
+											<td class="text-uppercase">{{ $d->status }}</td>
+											<td>{{ $d->purpose }}</td>
 											<td>
-												<a href="{{ route('download.attachment',[$d->id,$d->attachment]) }}">
-		                                            {{ $d->attachment }}
-		                                        </a>
-											</td>
-											<td>
-												<button type="button" data-toggle="collapse" data-target="#receiving-items{{$d->id}}" class="btn btn-xs green">View Items</a>
+												<button type="button" data-toggle="collapse" data-target="#issuance-items{{$d->id}}" class="btn btn-xs green">View Items</a>
 											</td>
 										</tr>
-										<tr id="receiving-items{{$d->id}}" class="collapse">
+										<tr id="issuance-items{{$d->id}}" class="collapse">
 		                                    <td colspan="4">
 		                                    	<div class="col-md-12">
 		                                    		<table class="table table-bordered" width="100%">

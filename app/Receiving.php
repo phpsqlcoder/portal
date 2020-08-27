@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Receiving extends Model
 {
 	public $table = 'receiving';
-    protected $fillable = ['receipt_no', 'supplier_id'];
+    protected $fillable = ['receipt_no', 'supplier_id','attachment'];
     public $timestapms = true;
 
     public function items()

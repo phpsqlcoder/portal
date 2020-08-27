@@ -51,9 +51,14 @@ Route::resource('schedules', 'ScheduleController');
 	Route::get('/report/inventory','ReportController@inventory')->name('report.inventory');
 //
 
-Route::get('/receiving/list', 'ReceivingController@index')->name('receiving.list');
-Route::get('/receiving/create', 'ReceivingController@create')->name('receiving.create');
-Route::post('/receiving-store','ReceivingController@store')->name('receiving.store');
+	Route::get('/receiving/list', 'ReceivingController@index')->name('receiving.list');
+	Route::get('/receiving/create', 'ReceivingController@create')->name('receiving.create');
+	Route::post('/receiving-store','ReceivingController@store')->name('receiving.store');
+	Route::get('.download-attachment/{id}/{filename}','ReceivingController@download')->name('download.attachment');
+
+	Route::get('/issuance/list', 'IssuanceController@index')->name('issuance.index');
+	Route::get('/issuance/create', 'IssuanceController@create')->name('issuance.create');
+	Route::post('/issuance-store','IssuanceController@store')->name('issuance.store');
 
 
 // Route::get('/guest-form/create',function(){

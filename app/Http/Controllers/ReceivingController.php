@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Filesystem\Filesystem;
+
 use Auth;
 
 use App\Products;
@@ -29,7 +32,8 @@ class ReceivingController extends Controller
 	{
 		$data = Receiving::create([
 			'receipt_no' => $req->receiptno,
-			'supplier_id' => $req->supplier
+			'supplier_id' => $req->supplier,
+			'attachment' => isset($req->attachment) ? $req->attachment->getClientOriginalName() : 'NULL'
 		]);
 
 		if($data){
@@ -46,9 +50,23 @@ class ReceivingController extends Controller
 					'qty' => $itemqty[$key]
 				]);	
 			}
+
+			if(isset($req->attachment)){
+				$file = $req->attachment;
+
+                Storage::makeDirectory('/public/issuances/'.$data->id);
+                Storage::putFileAs('/public/issuances/'.$data->id, $file, $file->getClientOriginalName());
+            }
+
+
 		}
 
 		return redirect(route('receiving.list'));
+	}
+
+	public function download($id,$filename)
+	{
+		return response()->download(storage_path("app/public/issuances/{$id}/{$filename}"));
 	}
 
 }

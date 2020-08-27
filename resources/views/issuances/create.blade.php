@@ -2,44 +2,46 @@
 
 @section('content')
 
-<h3>Create New Receiving Transaction</h3>
+<h3>Create New Issuance</h3>
 <br><br>
-<form class="form-horizontal" method="post" action="{{ route('receiving.store') }}" enctype="multipart/form-data">
+<form class="form-horizontal" method="post" action="{{ route('issuance.store') }}">
 	<div class="row">
 		<div class="col-md-4">
 			@csrf
 			<div class="form-group">
-				<label class="control-label col-sm-4" for="receiptno">Receipt/Invoice no.*</label>
+				<label class="control-label col-sm-4" for="receiptno">Date*</label>
 				<div class="col-sm-8">
-					<input required type="text" name="receiptno" class="form-control" placeholder="Enter receipt or invoice number">
+					<input required type="date" name="issuance_date" class="form-control">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4" for="pwd">Supplier*</label>
+				<label class="control-label col-sm-4" for="pwd">Type*</label>
 				<div class=" col-sm-8">
-					<select required name="supplier" id="supplier" class="form-control" style="text-transform: capitalize;">
-						<option value="">Select Supplier</option>
-						<option value="Medshop Philippines">Medshop Philippines</option>
-						<option value="New hlink medical corporation">New hlink medical corporation</option>
-						<option value="Octa-Gene Systems, Incorporated">Octa-Gene Systems, Incorporated</option>
-						<option value="Botica Carsal">Botica Carsal</option>
-						<option value="KMG MEDICAL SUPPLIES AND EQUIPMENT">KMG MEDICAL SUPPLIES AND EQUIPMENT</option>
-						<option value="Addnew">Add New</option>
+					<select required name="type" class="form-control" style="text-transform: capitalize;">
+						<option value="">Select Type</option>
+						<option value="personal">Personal</option>
+						<option value="office">Office</option>
 					</select>
 				</div>
 			</div>
-			<div class="form-group" style="display:none;" id="newsup">
-				<label class="control-label col-sm-4" for="pwd">New Supplier</label>
-				<div class="col-sm-8">
-					<input type="text" name="newsupplier" class="form-control" placeholder="Enter new supplier">
-				</div>
-			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-4" for="receiptno">Attachment</label>
-				<div class="col-sm-8">
-					<input type="file" name="attachment" class="form-control">
+				<label class="control-label col-sm-4" for="pwd">Status*</label>
+				<div class=" col-sm-8">
+					<select required name="status" class="form-control" style="text-transform: capitalize;">
+						<option value="">Select Status</option>
+						<option value="saved">Saved</option>
+						<option value="posted">Posted</option>
+					</select>
 				</div>
 			</div>
+
+			<div class="form-group">
+				<label class="control-label col-sm-4" for="receiptno">Purpose*</label>
+				<div class="col-sm-8">
+					<textarea required name="purpose" class="form-control" rows="5"></textarea>
+				</div>
+			</div>
+
 			<div class="form-group">
 				<label class="control-label col-sm-4" for="pwd">Items</label>
 				<div class="col-sm-6">
@@ -113,14 +115,14 @@
 	           $('#row'+button_id+'').remove();  
 	        });
 
-	        $(document).on('change', '#supplier', function(){  
-	           if($(this).val() == 'Addnew'){
-	           	$('#newsup').show();
-	           }
-	           else{
-	           		$('#newsup').hide();
-	           }
-	        });
+	        // $(document).on('change', '#supplier', function(){  
+	        //    if($(this).val() == 'Addnew'){
+	        //    	$('#newsup').show();
+	        //    }
+	        //    else{
+	        //    		$('#newsup').hide();
+	        //    }
+	        // });
 
 	        
 	    });
