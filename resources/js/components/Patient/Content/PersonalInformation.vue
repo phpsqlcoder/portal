@@ -59,40 +59,26 @@
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <label class="control-label">Contact Number <span class="text-danger">*</span></label>
-                            <div class="">
-                                <input type="text" name="contact_no" class="form-control" placeholder="Contact number" v-model="patientInfo['contact_no']" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row margin-top-30">
-                        <div class="col-md-6">
                             <label class="control-label">Occupation</label>
                             <div class="">
                                 <input type="text" name="occupation" class="form-control" placeholder="Occuptaion" v-model="patientInfo['occupation']">
                             </div>
                         </div>
-                        <div class="col-md-6">
+                    </div>
+                    <div class="row margin-top-30">
+                        <div class="col-md-4">
                             <label class="control-label">Images</label>
                             <div class="">
                                 <input type="file" name="images[]" multiple="multiple" class="form-control">										
                             </div>
                         </div>
-                    </div>
-                    <div class="row margin-top-30">
-                        <div class="col-md-6">
-                            <label class="control-label">Address <span class="text-danger">*</span></label>
-                            <div class="">
-                                <textarea name="address" class="form-control" placeholder="Street/ Lot/ Subdivision/ City/ Province" v-model="patientInfo['address']" required></textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label class="control-label">Referral</label>
                             <div class="">
                                 <input type="text" name="referral" class="form-control" placeholder="Referred by" v-model="patientInfo['referral']">										
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label class="control-label">Do you have a foreign address?</label>
                             <div class="">
                                 <input type="radio" name="foreign_address" value="true" v-model="patientInfo['foreign_address']" required>

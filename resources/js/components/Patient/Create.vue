@@ -137,12 +137,14 @@ import MedicalInformation from './ProfileContent/MedicalInformation/EditCreate'
                             this.patientInfo['user_id'] = (this.auth != undefined) ? this.auth.id : null;
                             this.$http.post(`${this.host}/api/patients`, this.patientInfo)
                             .then(response => this.patient = response.data.patient)
+                            .then(response => {
+                                this.$swal(
+                                'Saved!',
+                                'Patient saved successfully.',
+                                'success'
+                                )
+                            })
                             .catch(error => console.log(error))
-                            this.$swal(
-                            'Saved!',
-                            'Patient saved successfully.',
-                            'success'
-                            )
                             
                             if(this.auth != undefined) {
                                 setTimeout(() => {

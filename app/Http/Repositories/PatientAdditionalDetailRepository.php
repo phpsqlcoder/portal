@@ -25,7 +25,7 @@ class PatientAdditionalDetailRepository {
                 'local_city' => $request['local_city'],
                 'local_country' => $request['local_country'],
                 'local_postal_code' => $request['local_postal_code'],
-                'local_telephone_number' => $request['local_telephone_number'],
+                'local_telephone_number' => $request['contact_number'],
                 'local_fax_number' => (array_key_exists('local_fax_number', $request)) ? $request['local_fax_number'] : null,
                 'local_email' => $request['local_email'],
                 'foreign_address' => (array_key_exists('foreign_address', $request)) ? $request['foreign_address'] : null,
