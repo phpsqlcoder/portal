@@ -38,6 +38,13 @@ class MachineRepository {
         return $machines;
     }
 
+    public function fetchMachinesByDate($request)
+    {
+        return $this->machine->with(['schedules' => function($query) use ($request) {
+            $query->where('date', '=', date('Y-m-d', strtotime($request['date'])))->whereIsCancelled(0);
+        }])->get();
+    }
+
     public function fetchMachinesThatHasSchedule()
     {
         return $this->machine->with(['schedules' => function($query) {

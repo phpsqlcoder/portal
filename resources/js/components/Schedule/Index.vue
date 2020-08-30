@@ -43,7 +43,7 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="doctor in assigned_doctors" :key="doctor.id">
-                                        <td>{{doctor.name}}</td>
+                                        <td>Dr. {{doctor.name}}</td>
                                         <template v-for="index in 9">
                                             <td :key="index"
                                             v-if="
@@ -134,13 +134,13 @@
                                 <div class="form-group row">
                                     <label class="col-md-3">Date</label>
                                     <div class="col-md-9">
-                                        <input type="date" :min="moment().format('Y-MM-D')" class="form-control" v-model="form.date" @change="fetchPersonnels" required>
+                                        <input type="date" :min="moment().format('Y-MM-D')" class="form-control" v-model="form.date" @change="fetchAvailablePersonnelsAndMachines" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-md-3">Time (From - To)</label>
                                     <div class="col-md-4">
-                                        <select class="form-control" v-model="form.time_from" :disabled="form.date===null" @change="fetchPersonnels" required>
+                                        <select class="form-control" v-model="form.time_from" :disabled="form.date===null" @change="fetchAvailablePersonnelsAndMachines" required>
                                             <option value="" disabled>From</option>
                                             <option 
                                             v-for="index in 10" 
@@ -152,7 +152,7 @@
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-4">
-                                        <select class="form-control" v-model="form.time_to" :disabled="form.date===null || form.time_from===''" @change="fetchPersonnels" required>
+                                        <select class="form-control" v-model="form.time_to" :disabled="form.date===null || form.time_from===''" @change="fetchAvailablePersonnelsAndMachines" required>
                                             <option value="" disabled>To</option>
                                             <option 
                                             v-for="index in 10" 
@@ -292,8 +292,8 @@
                                                 <div class="col-md-4">Procedure:</div>
                                                 <div class="col-md-8"><ul><strong>{{show_information.schedules.procedure}}</strong></ul></div>
                                                 <div class="col-md-12 d-flex justify-content-end">
-                                                    <button class="btn btn-primary" @click="editSchedule" data-toggle="modal" data-target="#editSchedule">Edit</button> &nbsp;
-                                                    <button class="btn btn-danger" @click="cancelSchedule">Cancel</button>
+                                                    <button class="btn btn-primary" @click="editSchedule" data-toggle="modal" data-target="#editSchedule">Edit Schedule</button> &nbsp;
+                                                    <button class="btn btn-danger" @click="cancelSchedule">Cancel Schedule</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -342,13 +342,13 @@
                                 <div class="form-group row">
                                     <label class="col-md-3">Date</label>
                                     <div class="col-md-9">
-                                        <input type="date" :min="moment().format('Y-MM-D')" class="form-control" v-model="form_edit.date" @change="fetchPersonnels" required>
+                                        <input type="date" :min="moment().format('Y-MM-D')" class="form-control" v-model="form_edit.date" @change="fetchAvailablePersonnelsAndMachines" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-md-3">Time (From - To)</label>
                                     <div class="col-md-4">
-                                        <select class="form-control" v-model="form_edit.time_from" :disabled="form_edit.date===null" @change="fetchPersonnels" required>
+                                        <select class="form-control" v-model="form_edit.time_from" :disabled="form_edit.date===null" @change="fetchAvailablePersonnelsAndMachines" required>
                                             <option value="" disabled>From</option>
                                             <option 
                                             v-for="index in 10" 
@@ -360,7 +360,7 @@
                                     </div>
                                     <div class="col-md-1"></div>
                                     <div class="col-md-4">
-                                        <select class="form-control" v-model="form_edit.time_to" :disabled="form_edit.date===null || form_edit.time_from===''" @change="fetchPersonnels" required>
+                                        <select class="form-control" v-model="form_edit.time_to" :disabled="form_edit.date===null || form_edit.time_from===''" @change="fetchAvailablePersonnelsAndMachines" required>
                                             <option value="" disabled>To</option>
                                             <option 
                                             v-for="index in 10" 
@@ -508,7 +508,7 @@ export default {
         }
     },
     mounted() {
-        this.fetchPersonnel()
+        // this.fetchPersonnel()
         this.fetchPersonnelsThatHasSchedule()
         this.fetchMachinesThatHasSchedule()
         this.searchPatient()
@@ -528,23 +528,20 @@ export default {
             .then(response => this.assigned_machines = response.data.machines)
             .catch(error => console.log(error))
         },
-        fetchPersonnel() {
-            this.$http.all([
-                this.$http.get('api/personnels/fetch-all-doctors'), 
-                this.$http.get('api/personnels/fetch-all-nurses'),
-                this.$http.get('api/machines')
-            ])
-            .then(this.$http.spread((request_one, request_two, request_three) => {
-                this.doctors = request_one.data.doctors
-                this.nurses = request_two.data.nurses
-                this.machines = request_three.data.machines
-            }))
-            .catch(error => console.log(error))
-        },
-        fetchPersonnels() {
-            // if(this.form.date != null && this.form.time_from != '' && this.form.time_to === '') {
-            //     this.form.time_to = moment(this.form.time_from, 'h:m a').add(1, 'hours').format('LT')
-            // }
+        // fetchPersonnel() {
+        //     this.$http.all([
+        //         this.$http.get('api/personnels/fetch-all-doctors'), 
+        //         this.$http.get('api/personnels/fetch-all-nurses'),
+        //         this.$http.get('api/machines')
+        //     ])
+        //     .then(this.$http.spread((request_one, request_two, request_three) => {
+        //         this.doctors = request_one.data.doctors
+        //         this.nurses = request_two.data.nurses
+        //         this.machines = request_three.data.machines
+        //     }))
+        //     .catch(error => console.log(error))
+        // },
+        fetchAvailablePersonnelsAndMachines() {
             if(this.form.date != null && this.form.time_from != '' && this.form.time_to != ''){
                 this.$http.all([
                     this.$http.post('api/personnels/fetch-available-personnels', {
@@ -558,10 +555,11 @@ export default {
                         time_to: this.form.time_to
                     }),
                 ])
-                .then(this.$http.spread((doctors, nurses, machines) => {
-                    console.log(doctors)
-                    console.log(nurses)
-                    console.log(machines)
+                .then(this.$http.spread((personnels, machines) => {
+                    var personnels = personnels.data.personnels
+                    this.doctors = personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'doctor'))
+                    this.nurses = personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'nurse'))
+                    this.machines = machines.data.machines
                 }))
                 .catch(error => console.log(error))
             }
@@ -622,11 +620,10 @@ export default {
         },
         scheduleInformation(data, time) {
             this.show_info = true
-            console.log(data)
             this.show_information = JSON.parse(JSON.stringify(data))
             
             this.show_information.schedules = this.show_information.schedules.find(schedule => (moment('8:00:00', 'h:m a').add(time, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0 && moment(schedule.time_to, 'h:m a').diff(moment('8:00:00', 'h:m a').add(time, 'hours')) >= 0))
-            // console.log(this.show_information.schedules.personnels)
+
             this.show_information.schedules['assigned_doctors'] = this.show_information.schedules.personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'doctor'))
             this.show_information.schedules['assigned_nurses'] = this.show_information.schedules.personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'nurse'))
             
@@ -652,7 +649,6 @@ export default {
                 machines.push(this.machines.find(mac => (mac.id === machine.id)))
             })
             
-            console.log(doctors)
             this.form_edit = {...this.form_edit, 
             date: data.schedules.date,
             time_from: moment(data.schedules.time_from, 'h:m a').format('LT'),
