@@ -25,7 +25,8 @@ class ScheduleRepository {
                     'date' => $data['date'],
                     'time_from' => $data['time_from'],
                     'time_to' => $data['time_to'],
-                    'procedure' => $data['procedure'] 
+                    'procedure' => $data['procedure'],
+                    'is_editing' => 0
                 ]
             );
         } catch (Exception $exception) {
@@ -49,6 +50,25 @@ class ScheduleRepository {
         try {
             return $this->schedule->findorfail($id)->update(['is_cancelled' => 1]);
         } catch (Exception $exception) {
+            return $exception;
+        }
+    }
+
+    public function disableEditing()
+    {
+        try {
+            return $this->schedule->whereIsEditing(1)->update(['is_editing' => 0]);
+        } catch (Exception $exception) {
+            return $exception;
+        }
+    }
+
+    public function editingSchedule($id)
+    {
+        try {
+            return $this->schedule->findorfail($id);
+        } catch (Exception $exception) {
+            DB::rollBack();
             return $exception;
         }
     }

@@ -15,7 +15,7 @@
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-center my-1">
                             <div>
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#addSchedule">Add Schedule</button>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#addSchedule" @click="addSchedule">Add Schedule</button>
                                 <button class="btn btn-primary" @click="previousDay">Previous Day</button>
                                 <button class="btn btn-primary" @click="nextDay">Next Day</button>
                             </div>
@@ -143,7 +143,7 @@
                                         <select class="form-control" v-model="form.time_from" :disabled="form.date===null" @change="fetchAvailablePersonnelsAndMachines" required>
                                             <option value="" disabled>From</option>
                                             <option 
-                                            v-for="index in 10" 
+                                            v-for="index in 9" 
                                             :key="index" 
                                             :value="moment('8:00:00', 'h:m a').add(index, 'hours').format('LT')">
                                                 {{moment('8:00:00', 'h:m a').add(index, 'hours').format('LT')}}
@@ -155,7 +155,7 @@
                                         <select class="form-control" v-model="form.time_to" :disabled="form.date===null || form.time_from===''" @change="fetchAvailablePersonnelsAndMachines" required>
                                             <option value="" disabled>To</option>
                                             <option 
-                                            v-for="index in 10" 
+                                            v-for="index in 9" 
                                             :key="index" 
                                             :value="moment('8:00:00', 'h:m a').add(index, 'hours').format('LT')"
                                             :hidden="moment('8:00:00', 'h:m a').add(index, 'hours').diff(moment(form.time_from, 'h:m a')) <! 0"
@@ -334,125 +334,132 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="cancelEditing"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Add Schedule</h4>
                         </div>
                         <form @submit.prevent="submitEditedSchedule">
                             <div class="modal-body">
-                                <div class="form-group row">
-                                    <label class="col-md-3">Date</label>
-                                    <div class="col-md-9">
-                                        <input type="date" :min="moment().format('Y-MM-D')" class="form-control" v-model="form_edit.date" @change="fetchAvailablePersonnelsAndMachines" required>
+                                <div class="row" v-if="loading">
+                                    <div class="col-md-12 d-flex justify-content-center">
+                                        <pulse-loader :loading="loading" color="blue" size="30px"></pulse-loader>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3">Time (From - To)</label>
-                                    <div class="col-md-4">
-                                        <select class="form-control" v-model="form_edit.time_from" :disabled="form_edit.date===null" @change="fetchAvailablePersonnelsAndMachines" required>
-                                            <option value="" disabled>From</option>
-                                            <option 
-                                            v-for="index in 10" 
-                                            :key="index" 
-                                            :value="moment('8:00:00', 'h:m a').add(index, 'hours').format('LT')">
-                                                {{moment('8:00:00', 'h:m a').add(index, 'hours').format('LT')}}
-                                            </option>
+                                <template v-else>
+                                    <div class="form-group row">
+                                        <label class="col-md-3">Date</label>
+                                        <div class="col-md-9">
+                                            <input type="date" :min="moment().format('Y-MM-D')" class="form-control" v-model="form_edit.date" @change="fetchAvailablePersonnelsAndMachines" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3">Time (From - To)</label>
+                                        <div class="col-md-4">
+                                            <select class="form-control" v-model="form_edit.time_from" :disabled="form_edit.date===null" @change="fetchAvailablePersonnelsAndMachines" required>
+                                                <option value="" disabled>From</option>
+                                                <option 
+                                                v-for="index in 9" 
+                                                :key="index" 
+                                                :value="moment('8:00:00', 'h:m a').add(index, 'hours').format('LT')">
+                                                    {{moment('8:00:00', 'h:m a').add(index, 'hours').format('LT')}}
+                                                </option>
+                                                </select>
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-4">
+                                            <select class="form-control" v-model="form_edit.time_to" :disabled="form_edit.date===null || form_edit.time_from===''" @change="fetchAvailablePersonnelsAndMachines" required>
+                                                <option value="" disabled>To</option>
+                                                <option 
+                                                v-for="index in 9" 
+                                                :key="index" 
+                                                :value="moment('8:00:00', 'h:m a').add(index, 'hours').format('LT')"
+                                                :hidden="moment('8:00:00', 'h:m a').add(index, 'hours').diff(moment(form_edit.time_from, 'h:m a')) <! 0"
+                                                >
+                                                    {{moment('8:00:00', 'h:m').add(index, 'hours').format('LT')}}
+                                                </option>
                                             </select>
+                                        </div>
                                     </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-4">
-                                        <select class="form-control" v-model="form_edit.time_to" :disabled="form_edit.date===null || form_edit.time_from===''" @change="fetchAvailablePersonnelsAndMachines" required>
-                                            <option value="" disabled>To</option>
-                                            <option 
-                                            v-for="index in 10" 
-                                            :key="index" 
-                                            :value="moment('8:00:00', 'h:m a').add(index, 'hours').format('LT')"
-                                            :hidden="moment('8:00:00', 'h:m a').add(index, 'hours').diff(moment(form_edit.time_from, 'h:m a')) <! 0"
+                                    <div class="form-group row">
+                                        <label class="col-md-3">Patient</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" placeholder="Search for patient" list="patients" v-model="patient" required>
+                                                <datalist id="patients">
+                                                    <option v-for="patient in patients" :key="patient.id" :value="patient.fullname"></option>
+                                                </datalist>
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-default" type="button" @click="searchPatient">Search</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3">Procedure</label>
+                                        <div class="col-md-9">
+                                            <textarea rows="5" class="form-control" v-model="form_edit.procedure" placeholder="Type the procedure here..." required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3">Assign Doctor/s</label>
+                                        <div class="col-md-9">
+                                            <vs-select
+                                            placeholder="Select Doctor/s here..."
+                                            multiple
+                                            v-model="form_edit.doctors"
+                                            required
                                             >
-                                                {{moment('8:00:00', 'h:m').add(index, 'hours').format('LT')}}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3">Patient</label>
-                                    <div class="col-md-9">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Search for patient" list="patients" v-model="patient" required>
-                                            <datalist id="patients">
-                                                <option v-for="patient in patients" :key="patient.id" :value="patient.fullname"></option>
-                                            </datalist>
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-default" type="button" @click="searchPatient">Search</button>
-                                            </span>
+                                                <vs-select-item :key="doctor.id" :value="doctor" :text="doctor.name" v-for="doctor in doctors" />
+                                            </vs-select>
+                                            <label class="my-1">Assigned Doctor/s:</label>
+                                            <div>
+                                                <ul>
+                                                    <li v-for="(doctor, index) in form_edit.doctors" :key="doctor.id">{{index+1}}. {{doctor.name}} <a class="text-danger mx-1" data-toggle="tooltip" data-placement="top" title="Tooltip on top"></a></li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3">Procedure</label>
-                                    <div class="col-md-9">
-                                        <textarea rows="5" class="form-control" v-model="form_edit.procedure" placeholder="Type the procedure here..." required></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3">Assign Doctor/s</label>
-                                    <div class="col-md-9">
-                                        <vs-select
-                                        placeholder="Select Doctor/s here..."
-                                        multiple
-                                        v-model="form_edit.doctors"
-                                        required
-                                        >
-                                            <vs-select-item :key="doctor.id" :value="doctor" :text="doctor.name" v-for="doctor in doctors" />
-                                        </vs-select>
-                                        <label class="my-1">Assigned Doctor/s:</label>
-                                        <div>
-                                            <ul>
-                                                <li v-for="(doctor, index) in form_edit.doctors" :key="doctor.id">{{index+1}}. {{doctor.name}} <a class="text-danger mx-1" data-toggle="tooltip" data-placement="top" title="Tooltip on top"></a></li>
-                                            </ul>
+                                    <div class="form-group row">
+                                        <label class="col-md-3">Assign Nurse/s</label>
+                                        <div class="col-md-9">
+                                            <vs-select
+                                            placeholder="Select Nurse/s here"
+                                            multiple
+                                            v-model="form_edit.nurses"
+                                            required
+                                            >
+                                                <vs-select-item :key="nurses.id" :value="nurses" :text="nurses.name" v-for="nurses in nurses" />
+                                            </vs-select>
+                                            <label class="my-1">Assigned Nurse/s:</label>
+                                            <div>
+                                                <ul>
+                                                    <li v-for="(nurse, index) in form_edit.nurses" :key="index">{{index+1}}. {{nurse.name}}</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3">Assign Nurse/s</label>
-                                    <div class="col-md-9">
-                                        <vs-select
-                                        placeholder="Select Nurse/s here"
-                                        multiple
-                                        v-model="form_edit.nurses"
-                                        required
-                                        >
-                                            <vs-select-item :key="nurses.id" :value="nurses" :text="nurses.name" v-for="nurses in nurses" />
-                                        </vs-select>
-                                        <label class="my-1">Assigned Nurse/s:</label>
-                                        <div>
-                                            <ul>
-                                                <li v-for="(nurse, index) in form_edit.nurses" :key="index">{{index+1}}. {{nurse.name}}</li>
-                                            </ul>
+                                    <div class="form-group row">
+                                        <label class="col-md-3">Machine/s to be used</label>
+                                        <div class="col-md-9">
+                                            <vs-select
+                                            placeholder="Select Machine/s here"
+                                            multiple
+                                            v-model="form_edit.machines"
+                                            required
+                                            >
+                                                <vs-select-item :key="machine.id" :value="machine" :text="machine.name" v-for="machine in machines" />
+                                            </vs-select>
+                                            <label class="my-1">Assigned Machine/s:</label>
+                                            <div>
+                                                <ul>
+                                                    <li v-for="(madchine, index) in form_edit.machines" :key="index">{{index+1}}. {{madchine.name}}</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-md-3">Machine/s to be used</label>
-                                    <div class="col-md-9">
-                                        <vs-select
-                                        placeholder="Select Machine/s here"
-                                        multiple
-                                        v-model="form_edit.machines"
-                                        required
-                                        >
-                                            <vs-select-item :key="machine.id" :value="machine" :text="machine.name" v-for="machine in machines" />
-                                        </vs-select>
-                                        <label class="my-1">Assigned Machine/s:</label>
-                                        <div>
-                                            <ul>
-                                                <li v-for="(madchine, index) in form_edit.machines" :key="index">{{index+1}}. {{madchine.name}}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                                </template>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <div class="modal-footer" v-if="!loading">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" @click="cancelEditing">Close</button>
                                 <button type="submit" class="btn btn-primary">Save changes</button>
                             </div>
                         </form>
@@ -467,8 +474,9 @@
 
 <script>
 var moment = require('moment');
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 export default {
-    components: {},
+    components: {PulseLoader},
     data() {
         return {
             moment: moment,
@@ -505,6 +513,8 @@ export default {
             date: moment().format('Y-MM-D'),
             show_information: [],
             show_info: false,
+            edit_schedule: false,
+            loading: false,
         }
     },
     mounted() {
@@ -542,27 +552,55 @@ export default {
         //     .catch(error => console.log(error))
         // },
         fetchAvailablePersonnelsAndMachines() {
-            if(this.form.date != null && this.form.time_from != '' && this.form.time_to != ''){
+            if(!this.edit_schedule) {
+                var form = {
+                    date: this.form.date,
+                    time_from: this.form.time_from,
+                    time_to: this.form.time_to
+                }
+            } else {
+                var form = {
+                    date: this.form_edit.date,
+                    time_from: this.form_edit.time_from,
+                    time_to: this.form_edit.time_to,
+                    edit: true
+                }
+            }
+
+            if(moment(form.time_from, 'h:m a').diff(moment(form.time_to, 'h:m a')) > 0) {
+                if(!this.edit_schedule) {
+                    this.form.time_to = moment(form.time_from, 'h:m a').add(1, 'hours').format('LT')
+                } else {
+                    this.form_edit.time_to = moment(form.time_from, 'h:m a').add(1, 'hours').format('LT')
+                }
+            }
+            console.log(form)
+            if(form.date != null && form.time_from != '' && form.time_to != ''){
                 this.$http.all([
-                    this.$http.post('api/personnels/fetch-available-personnels', {
-                        date: this.form.date,
-                        time_from: this.form.time_from,
-                        time_to: this.form.time_to
-                    }),
-                    this.$http.post('api/machines/fetch-available-machines', {
-                        date: this.form.date,
-                        time_from: this.form.time_from,
-                        time_to: this.form.time_to
-                    }),
+                    this.$http.post('api/personnels/fetch-available-personnels', form),
+                    this.$http.post('api/machines/fetch-available-machines', form),
                 ])
                 .then(this.$http.spread((personnels, machines) => {
                     var personnels = personnels.data.personnels
                     this.doctors = personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'doctor'))
                     this.nurses = personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'nurse'))
                     this.machines = machines.data.machines
+
+                    if(this.edit_schedule) {
+                        this.form_edit = {...this.form_edit, 
+                            doctors: [],
+                            nurses: [],
+                            machines: []
+                        }
+                    }
                 }))
                 .catch(error => console.log(error))
             }
+        },
+        addSchedule() {
+            this.$http.post('api/schedules/disable-editing')
+            .then(response => console.log(response.data))
+            .catch(error => console.log(error))
         },
         searchPatient() {
             this.$http.post('api/search-patient', {name: this.form.patient})
@@ -626,28 +664,17 @@ export default {
 
             this.show_information.schedules['assigned_doctors'] = this.show_information.schedules.personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'doctor'))
             this.show_information.schedules['assigned_nurses'] = this.show_information.schedules.personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'nurse'))
-            
 
             $('#showInformation').modal('show')
         },
         editSchedule() {
+            this.loading = true
+            this.edit_schedule = true
+
             var data = JSON.parse(JSON.stringify(this.show_information))
-
-            var doctors = []
-            var nurses = []
-            var machines = []
-
-            data.schedules.assigned_doctors.forEach(doctor => {
-                doctors.push(this.doctors.find(doc => (doc.id === doctor.id)))
-            })
-
-            data.schedules.assigned_nurses.forEach(nurse => {
-                nurses.push(this.nurses.find(nurs => (nurs.id === nurse.id)))
-            })
-
-            data.schedules.machines.forEach(machine => {
-                machines.push(this.machines.find(mac => (mac.id === machine.id)))
-            })
+            
+            this.editingSchedule()
+            .catch(error => console.log(error))
             
             this.form_edit = {...this.form_edit, 
             date: data.schedules.date,
@@ -655,12 +682,46 @@ export default {
             time_to: moment(data.schedules.time_to, 'h:m a').format('LT'),
             patient: data.schedules.patients,
             procedure: data.schedules.procedure,
-            doctors: doctors,
-            nurses: nurses,
-            machines: machines
             }
+
             this.patient = data.schedules.patients.fullname
+                
+            this.fetchAvailablePersonnelsAndMachines()
+
+            setTimeout(() => {
+                var doctors = []
+                var nurses = []
+                var machines = []
+                
+                data.schedules.assigned_doctors.forEach(doctor => {
+                    doctors.push(this.doctors.find(doc => (doc.id === doctor.id)))
+                })
+
+                data.schedules.assigned_nurses.forEach(nurse => {
+                    nurses.push(this.nurses.find(nurs => (nurs.id === nurse.id)))
+                })
+
+                data.schedules.machines.forEach(machine => {
+                    machines.push(this.machines.find(mac => (mac.id === machine.id)))
+                })
+
+                this.form_edit = {...this.form_edit, 
+                    doctors: doctors,
+                    nurses: nurses,
+                    machines: machines
+                }
+
+                this.loading = false
+            }, 3000)
+            
             $('#showInformation').modal('show')
+        },
+        cancelEditing() {
+            this.editingSchedule()
+            .catch(error => console.log(error))
+
+            this.edit_schedule = false
+            $('#editSchedule').modal('hide')
         },
         submitEditedSchedule() {
             if(this.form_edit.date === null
@@ -704,6 +765,7 @@ export default {
                             machines: [],
                         }
                         this.patient = null
+                        this.edit_schedule = false
                         $('#showInformation').modal('hide')
                         $('#editSchedule').modal('hide')
                         this.changedDate()
@@ -743,6 +805,13 @@ export default {
                     )
                 }
             })
+        },
+        async editingSchedule() {
+            var response = await this.$http.put(`api/schedules/editing-schedule/${this.show_information.schedules.id}`, {
+                editing: this.edit_schedule
+            })
+
+            return response
         },
         previousDay() {
             this.date = moment(this.date, 'Y-MM-DD').subtract(1, 'days').format('Y-MM-DD')

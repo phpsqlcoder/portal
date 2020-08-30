@@ -70,7 +70,7 @@ class PersonnelRepository {
     public function ScheduleByDate($request)
     {
         return $this->personnel->with(['schedules' => function($query) use ($request) {
-            $query->where('date', '=', date('Y-m-d', strtotime($request['date'])))->whereIsCancelled(0);
+            $query->where('date', '=', date('Y-m-d', strtotime($request['date'])))->whereIsCancelled(0)->whereIsEditing(0);
         }])->get();
     }
 

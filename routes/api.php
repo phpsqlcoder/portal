@@ -46,4 +46,6 @@ Route::prefix('schedules')->group(function() {
     Route::put('/{id}', 'API\ScheduleController@update');
     Route::put('cancel-schedule/{id}', 'API\ScheduleController@cancelSchedule');
     Route::get('fetch-today-schedule', 'API\ScheduleController@fetchTodaySchedule');
+    Route::put('editing-schedule/{id}', 'API\ScheduleController@editingSchedule');
+    Route::post('disable-editing', 'API\ScheduleCOntroller@disableEditing');
 });
