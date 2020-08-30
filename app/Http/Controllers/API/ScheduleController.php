@@ -99,4 +99,19 @@ class ScheduleController extends Controller
             'message' => 'Schedule cancelled successfully'
         ]);
     }
+
+    public function editingSchedule(Request $request, $id)
+    {
+        $schedule = $this->schedule_service->editingSchedule($request->all(), $id);
+        return response()->json(compact('schedule'));
+    }
+
+    public function disableEditing()
+    {
+        $this->schedule_repository->disableEditing();
+
+        return response()->json([
+            'sucess' => true
+        ]);
+    }
 }

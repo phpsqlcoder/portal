@@ -67,4 +67,17 @@ class ScheduleService {
     {
         return $this->schedule_repository->cancelSchedule($id);
     }
+
+    public function editingSchedule($editing, $id)
+    {
+        $schedule = $this->schedule_repository->editingSchedule($id);
+
+        if($editing) { 
+            $schedule->is_editing = true;
+        } else {
+            $schedule->is_editing = false;
+        }
+        $schedule->save();
+        return $schedule;
+    }
 }
