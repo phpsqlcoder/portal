@@ -22,4 +22,9 @@ class Schedule extends Model
     {
         return $this->belongsToMany('App\Machine');
     }
+
+    public function getStatusAttribute($status)
+    {
+        return ucfirst($status);
+    }
 }

@@ -20,6 +20,7 @@ class CreateSchedulesTable extends Migration
             $table->time('time_from');
             $table->time('time_to');
             $table->string('procedure');
+            $table->string('status');
             $table->boolean('is_editing');
             $table->boolean('is_cancelled');
             $table->timestamps();

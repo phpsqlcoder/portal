@@ -22,8 +22,36 @@
     margin-top: 14px;
 }
 
+.mr-1 {
+    margin-right: 14px;
+}
+
 .mb-1 {
     margin-bottom: 14px;
+}
+
+.vacant {
+    background: white;
+}
+
+.scheduled {
+    background: plum;
+}
+
+.arrived {
+    background: rgb(71, 190, 230);
+}
+
+.waiting {
+    background: yellow;
+}
+
+.on-going {
+    background: rgb(129, 236, 129);
+}
+
+.done {
+    background: pink;
 }
 
 .d-flex {
@@ -48,6 +76,10 @@
 
 .justify-content-end {
     justify-content: flex-end;
+}
+
+.justify-content-between {
+    justify-content: space-between;
 }
 
 .align-items-center {

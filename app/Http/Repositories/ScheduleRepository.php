@@ -26,6 +26,7 @@ class ScheduleRepository {
                     'time_from' => $data['time_from'],
                     'time_to' => $data['time_to'],
                     'procedure' => $data['procedure'],
+                    'status' => $data['status'],
                     'is_editing' => 0
                 ]
             );

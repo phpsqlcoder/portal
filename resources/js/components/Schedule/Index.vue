@@ -13,32 +13,46 @@
                 </div>
                 <div class="portlet-body">
                     <div class="row">
-                        <div class="col-md-12 d-flex justify-content-center my-1">
-                            <div>
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#addSchedule" @click="addSchedule">Add Schedule</button>
-                                <button class="btn btn-primary" @click="previousDay">Previous Day</button>
-                                <button class="btn btn-primary" @click="nextDay">Next Day</button>
+                        <div class="col-md-12 d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <label class="m-0"><strong>Legends:</strong></label>
+                                &nbsp;
+                                <div class="d-flex align-items-center" v-for="(status, index) in statuses" :key="index">
+                                    <div class="color" :class="status.toLowerCase()"></div>
+                                    &nbsp;
+                                    <label class="m-0">{{status}}</label>
+                                    <template v-if="index === statuses.length-1"></template>
+                                    <template v-else>|</template>
+                                    &nbsp;
+                                </div>
                             </div>
-                            &nbsp;
-                            <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon1">Date</span>
-                                <input type="date" class="form-control" placeholder="Username" aria-describedby="basic-addon1" v-model="date" @change="changedDate">
+                            <div class=" d-flex justify-content-center my-1">
+                                <div>
+                                    <button class="btn btn-primary" data-toggle="modal" data-target="#addSchedule" @click="addSchedule">Add Schedule</button>
+                                    <button class="btn btn-primary" @click="previousDay">Previous Day</button>
+                                    <button class="btn btn-primary" @click="nextDay">Next Day</button>
+                                </div>
+                                &nbsp;
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon1">Date</span>
+                                    <input type="date" class="form-control" placeholder="Username" aria-describedby="basic-addon1" v-model="date" @change="changedDate">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12" v-if="assigned_doctors.length > 0">
                             <table class="table table-bordered my-1">
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>9 AM</th>
-                                        <th>10 AM</th>
-                                        <th>11 AM</th>
-                                        <th>12 NN</th>
-                                        <th>1 PM</th>
-                                        <th>2 PM</th>
-                                        <th>3 PM</th>
-                                        <th>4 PM</th>
-                                        <th>5 PM</th>
+                                        <th>9:15 AM</th>
+                                        <th>10:15 AM</th>
+                                        <th>11:15 AM</th>
+                                        <th>12:15 NN</th>
+                                        <th>1:15 PM</th>
+                                        <th>2:15 PM</th>
+                                        <th>3:15 PM</th>
+                                        <th>4:15 PM</th>
+                                        <th>5:15 PM</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -48,28 +62,37 @@
                                             <td :key="index"
                                             v-if="
                                                 doctor.schedules.find(schedule => 
-                                                (moment(schedule.time_to, 'h:m a').diff(moment('8:00:00', 'h:m a').add(index, 'hours')) >= 0
-                                                && moment('8:00:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0)
+                                                (moment(schedule.time_to, 'h:m a').diff(moment('8:15:00', 'h:m a').add(index, 'hours')) >= 0
+                                                && moment('8:15:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0)
                                                 )
                                                 "
-                                                class="bg-danger">
-                                                <div class="row m-0">
-                                                    <div class="col-md-12 d-flex justify-content-end p-0"><a class="text-primary information" @click="scheduleInformation(doctor, index)"><i class="fa fa-info-circle"></i></a></div>
-                                                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                                class="bg-success">
+                                                <!-- <div class="row m-0"> -->
+                                                    <!-- <div class="col-md-12 d-flex justify-content-end p-0"><a class="text-primary information" @click="scheduleInformation(doctor, index)"><i class="fa fa-info-circle"></i></a></div> -->
+                                                    <!-- <div class="col-md-12 d-flex justify-content-center align-items-center"> -->
                                                         <ul>
                                                             <template v-for="schedule in doctor.schedules" >
-                                                                <template v-if="moment(schedule.time_to, 'h:m a').diff(moment('8:00:00', 'h:m a').add(index, 'hours')) >= 0
-                                                                && moment('8:00:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0">
-                                                                    <li :key="schedule.id">
-                                                                    {{schedule.patients.fullname}}
+                                                                <template v-if="moment(schedule.time_to, 'h:m a').diff(moment('8:15:00', 'h:m a').add(index, 'hours')) >= 0
+                                                                && moment('8:15:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0">
+                                                                    <li :key="schedule.id" 
+                                                                    :class="[
+                                                                    schedule.status === 'Scheduled' ? 'scheduled' : '',
+                                                                    schedule.status === 'Arrived' ? 'arrived' : '',
+                                                                    schedule.status === 'Waiting' ? 'waiting' : '',
+                                                                    schedule.status === 'On-going' ? 'on-going' : '',
+                                                                    schedule.status === 'Done' ? 'done' : ''
+                                                                    ]"
+                                                                    class="d-flex">
+                                                                        <a class="text-primary information mr-1" @click="scheduleInformation(schedule, index)"><i class="fa fa-info-circle"></i></a>
+                                                                        <label>{{schedule.patients.fullname}}</label>
                                                                     </li>
                                                                 </template>
                                                             </template>
                                                         </ul>
-                                                    </div>
-                                                </div>
+                                                    <!-- </div> -->
+                                                <!-- </div> -->
                                             </td>
-                                            <td :key="index" v-else class="bg-success">
+                                            <td :key="index" v-else class="vacant">
                                                 <div class="row m-0">
                                                     <div class="col-md-12 d-flex justify-content-center align-items-center">
                                                         Available
@@ -84,28 +107,37 @@
                                             <td :key="index"
                                             v-if="
                                                 nurse.schedules.find(schedule => 
-                                                (moment(schedule.time_to, 'h:m a').diff(moment('8:00:00', 'h:m a').add(index, 'hours')) >= 0
-                                                && moment('8:00:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0)
+                                                (moment(schedule.time_to, 'h:m a').diff(moment('8:15:00', 'h:m a').add(index, 'hours')) >= 0
+                                                && moment('8:15:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0)
                                                 )
                                                 "
-                                                class="bg-danger">
-                                                <div class="row m-0">
-                                                    <div class="col-md-12 d-flex justify-content-end p-0"><a class="text-primary information" @click="scheduleInformation(nurse, index)"><i class="fa fa-info-circle"></i></a></div>
-                                                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                                class="bg-success">
+                                                <!-- <div class="row m-0"> -->
+                                                    <!-- <div class="col-md-12 d-flex justify-content-end p-0"><a class="text-primary information" @click="scheduleInformation(nurse, index)"><i class="fa fa-info-circle"></i></a></div> -->
+                                                    <!-- <div class="col-md-12 d-flex justify-content-center align-items-center"> -->
                                                         <ul>
                                                             <template v-for="schedule in nurse.schedules" >
-                                                                <template v-if="moment(schedule.time_to, 'h:m a').diff(moment('8:00:00', 'h:m a').add(index, 'hours')) >= 0
-                                                                && moment('8:00:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0">
-                                                                    <li :key="schedule.id">
+                                                                <template v-if="moment(schedule.time_to, 'h:m a').diff(moment('8:15:00', 'h:m a').add(index, 'hours')) >= 0
+                                                                && moment('8:15:00', 'h:m a').add(index, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0">
+                                                                    <li :key="schedule.id"
+                                                                    :class="[
+                                                                    schedule.status === 'Scheduled' ? 'scheduled' : '',
+                                                                    schedule.status === 'Arrived' ? 'arrived' : '',
+                                                                    schedule.status === 'Waiting' ? 'waiting' : '',
+                                                                    schedule.status === 'On-going' ? 'on-going' : '',
+                                                                    schedule.status === 'Done' ? 'done' : ''
+                                                                    ]"
+                                                                    class="d-flex">
+                                                                    <a class="text-primary information mr-1" @click="scheduleInformation(schedule, index)"><i class="fa fa-info-circle"></i></a>
                                                                     {{schedule.patients.fullname}}
                                                                     </li>
                                                                 </template>
                                                             </template>
                                                         </ul>
-                                                    </div>
-                                                </div>
+                                                    <!-- </div> -->
+                                                <!-- </div> -->
                                             </td>
-                                            <td :key="index" v-else class="bg-success">
+                                            <td :key="index" v-else class="vacant">
                                                 <div class="row m-0">
                                                     <div class="col-md-12 d-flex justify-content-center align-items-center">
                                                         Available
@@ -116,6 +148,9 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="col-md-12 text-center" v-else>
+                            <h1>No Schedule on this Day!</h1>
                         </div>
                     </div>
                 </div>
@@ -134,7 +169,7 @@
                                 <div class="form-group row">
                                     <label class="col-md-3">Date</label>
                                     <div class="col-md-9">
-                                        <input type="date" :min="moment().format('Y-MM-D')" class="form-control" v-model="form.date" @change="fetchAvailablePersonnelsAndMachines" required>
+                                        <input type="date" :min="moment().format('Y-MM-DD')" class="form-control" v-model="form.date" @change="fetchAvailablePersonnelsAndMachines" required>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -145,8 +180,8 @@
                                             <option 
                                             v-for="index in 9" 
                                             :key="index" 
-                                            :value="moment('8:00:00', 'h:m a').add(index, 'hours').format('LT')">
-                                                {{moment('8:00:00', 'h:m a').add(index, 'hours').format('LT')}}
+                                            :value="moment('8:15:00', 'h:m a').add(index, 'hours').format('LT')">
+                                                {{moment('8:15:00', 'h:m a').add(index, 'hours').format('LT')}}
                                             </option>
                                             </select>
                                     </div>
@@ -157,14 +192,25 @@
                                             <option 
                                             v-for="index in 9" 
                                             :key="index" 
-                                            :value="moment('8:00:00', 'h:m a').add(index, 'hours').format('LT')"
-                                            :hidden="moment('8:00:00', 'h:m a').add(index, 'hours').diff(moment(form.time_from, 'h:m a')) <! 0"
+                                            :value="moment('8:15:00', 'h:m a').add(index, 'hours').format('LT')"
+                                            :hidden="moment('8:15:00', 'h:m a').add(index, 'hours').diff(moment(form.time_from, 'h:m a')) <! 0"
                                             >
-                                                {{moment('8:00:00', 'h:m').add(index, 'hours').format('LT')}}
+                                                {{moment('8:15:00', 'h:m').add(index, 'hours').format('LT')}}
                                             </option>
                                         </select>
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                        <label class="col-md-3">Status</label>
+                                        <div class="col-md-9">
+                                            <vs-select
+                                            placeholder="Select Status"
+                                            v-model="form.status"
+                                            >
+                                                <vs-select-item v-for="(status, index) in statuses" :key="index" :text="status" :value="status"/>
+                                            </vs-select>
+                                        </div>
+                                    </div>
                                 <div class="form-group row">
                                     <label class="col-md-3">Patient</label>
                                     <div class="col-md-9">
@@ -268,30 +314,32 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="row m-0">
-                                                <div class="col-md-12 d-flex justify-content-center mb-1"><h5><strong>{{moment(show_information.schedules.date, 'YYYY-MM-D').format('MMMM Do, YYYY')}} from {{moment(show_information.schedules.time_from, 'h:m a').format('LT')}} To {{moment(show_information.schedules.time_to, 'h:m a').format('LT')}}</strong></h5></div>
-                                                <div class="col-md-4" style="margin-top: 5px;">Name of the Patient:</div>
-                                                <div class="col-md-8"><ul><strong>{{show_information.schedules.patients.fullname}}</strong></ul></div>
-                                                <div class="col-md-4"><li>Assigned Doctor/s: </li></div>
+                                                <div class="col-md-12 d-flex justify-content-center mb-1"><h5><strong>{{moment(show_information.date, 'YYYY-MM-D').format('MMMM Do, YYYY')}} from {{moment(show_information.time_from, 'h:m a').format('LT')}} To {{moment(show_information.time_to, 'h:m a').format('LT')}}</strong></h5></div>
+                                                <div class="col-md-4 text-right" style="margin-top: 5px;">Name of the Patient:</div>
+                                                <div class="col-md-8"><ul><strong>{{show_information.patients.fullname}}</strong></ul></div>
+                                                <div class="col-md-4 text-right"><li>Assigned Doctor/s: </li></div>
                                                 <div class="col-md-8">
                                                     <ul>
-                                                        <li v-for="personnel in show_information.schedules.assigned_doctors" :key="personnel.id"><strong>Dr. {{personnel.name}}</strong></li>
+                                                        <li v-for="personnel in show_information.assigned_doctors" :key="personnel.id"><strong>Dr. {{personnel.name}}</strong></li>
                                                     </ul>
                                                 </div>
-                                                <div class="col-md-4"><li>Assigned Nurse/s: </li></div>
+                                                <div class="col-md-4 text-right"><li>Assigned Nurse/s: </li></div>
                                                 <div class="col-md-8">
                                                     <ul>
-                                                        <li v-for="personnel in show_information.schedules.assigned_nurses" :key="personnel.id"><strong>{{personnel.name}}</strong></li>
+                                                        <li v-for="personnel in show_information.assigned_nurses" :key="personnel.id"><strong>{{personnel.name}}</strong></li>
                                                     </ul>
                                                 </div>
-                                                <div class="col-md-4"><li>Machine to be used: </li></div>
+                                                <div class="col-md-4 text-right"><li>Machine to be used: </li></div>
                                                 <div class="col-md-8">
                                                     <ul>
-                                                        <li v-for="machine in show_information.schedules.machines" :key="machine.id"><strong>{{machine.name}}</strong></li>
+                                                        <li v-for="machine in show_information.machines" :key="machine.id"><strong>{{machine.name}}</strong></li>
                                                     </ul>
                                                 </div>
-                                                <div class="col-md-4">Procedure:</div>
-                                                <div class="col-md-8"><ul><strong>{{show_information.schedules.procedure}}</strong></ul></div>
-                                                <div class="col-md-12 d-flex justify-content-end">
+                                                <div class="col-md-4 text-right">Procedure:</div>
+                                                <div class="col-md-8"><ul><strong>{{show_information.procedure}}</strong></ul></div>
+                                                <div class="col-md-4 text-right">Status:</div>
+                                                <div class="col-md-8"><ul class="d-flex justify-content-between"><strong>{{show_information.status}}</strong></ul></div>
+                                                <div class="col-md-12 mt-1 d-flex justify-content-end">
                                                     <button class="btn btn-primary" @click="editSchedule" data-toggle="modal" data-target="#editSchedule">Edit Schedule</button> &nbsp;
                                                     <button class="btn btn-danger" @click="cancelSchedule">Cancel Schedule</button>
                                                 </div>
@@ -307,35 +355,13 @@
             </template>
         <!-- Show Information: End -->
 
-        <!-- Show Information: Start -->
-            <template>
-                <div id="cancelSchedule" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                    <div class="modal-dialog" role="document" v-if="show_info">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Cancel Schedule</h4>
-                        </div>
-                        <div class="modal-body">
-                            <label>Would you like to cancel this Schedule?</label>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-primary" type="button" data-dismiss="modal" aria-label="Close">No</button>
-                            <button class="btn btn-danger" type="submit" @click="cancelSchedule">Continue</button>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            </template>
-        <!-- Show Information: End -->
-
         <template>
             <div class="modal fade" id="editSchedule" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="cancelEditing"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Add Schedule</h4>
+                            <h4 class="modal-title" id="myModalLabel">Edit Schedule</h4>
                         </div>
                         <form @submit.prevent="submitEditedSchedule">
                             <div class="modal-body">
@@ -348,7 +374,7 @@
                                     <div class="form-group row">
                                         <label class="col-md-3">Date</label>
                                         <div class="col-md-9">
-                                            <input type="date" :min="moment().format('Y-MM-D')" class="form-control" v-model="form_edit.date" @change="fetchAvailablePersonnelsAndMachines" required>
+                                            <input type="date" :min="moment().format('Y-MM-DD')" class="form-control" v-model="form_edit.date" @change="fetchAvailablePersonnelsAndMachines" required>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -359,8 +385,8 @@
                                                 <option 
                                                 v-for="index in 9" 
                                                 :key="index" 
-                                                :value="moment('8:00:00', 'h:m a').add(index, 'hours').format('LT')">
-                                                    {{moment('8:00:00', 'h:m a').add(index, 'hours').format('LT')}}
+                                                :value="moment('8:15:00', 'h:m a').add(index, 'hours').format('LT')">
+                                                    {{moment('8:15:00', 'h:m a').add(index, 'hours').format('LT')}}
                                                 </option>
                                                 </select>
                                         </div>
@@ -371,12 +397,23 @@
                                                 <option 
                                                 v-for="index in 9" 
                                                 :key="index" 
-                                                :value="moment('8:00:00', 'h:m a').add(index, 'hours').format('LT')"
-                                                :hidden="moment('8:00:00', 'h:m a').add(index, 'hours').diff(moment(form_edit.time_from, 'h:m a')) <! 0"
+                                                :value="moment('8:15:00', 'h:m a').add(index, 'hours').format('LT')"
+                                                :hidden="moment('8:15:00', 'h:m a').add(index, 'hours').diff(moment(form_edit.time_from, 'h:m a')) <! 0"
                                                 >
-                                                    {{moment('8:00:00', 'h:m').add(index, 'hours').format('LT')}}
+                                                    {{moment('8:15:00', 'h:m').add(index, 'hours').format('LT')}}
                                                 </option>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3">Status</label>
+                                        <div class="col-md-9">
+                                            <vs-select
+                                            placeholder="Select Status"
+                                            v-model="form_edit.status"
+                                            >
+                                                <vs-select-item v-for="(status, index) in statuses" :key="index" :text="status" :value="status"/>
+                                            </vs-select>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -498,6 +535,7 @@ export default {
                 doctors: [],
                 nurses: [],
                 machines: [],
+                status: null,
             },
             form_edit: {
                 date: null,
@@ -508,13 +546,16 @@ export default {
                 doctors: [],
                 nurses: [],
                 machines: [],
+                status: null,
             },
             time: null,
-            date: moment().format('Y-MM-D'),
+            date: moment().format('Y-MM-DD'),
             show_information: [],
             show_info: false,
             edit_schedule: false,
             loading: false,
+            statuses: ['Scheduled', 'Arrived', 'Waiting', 'On-going', 'Done'],
+            testing_patient: undefined
         }
     },
     mounted() {
@@ -567,14 +608,13 @@ export default {
                 }
             }
 
-            if(moment(form.time_from, 'h:m a').diff(moment(form.time_to, 'h:m a')) > 0) {
+            if(moment(form.time_from, 'h:m a').diff(moment(form.time_to, 'h:m a')) >= 0) {
                 if(!this.edit_schedule) {
                     this.form.time_to = moment(form.time_from, 'h:m a').add(1, 'hours').format('LT')
                 } else {
                     this.form_edit.time_to = moment(form.time_from, 'h:m a').add(1, 'hours').format('LT')
                 }
             }
-            console.log(form)
             if(form.date != null && form.time_from != '' && form.time_to != ''){
                 this.$http.all([
                     this.$http.post('api/personnels/fetch-available-personnels', form),
@@ -615,7 +655,8 @@ export default {
             || this.form.procedure === null
             || this.form.doctors.length === 0
             || this.form.nurses.length === 0
-            || this.form.machines.length === 0) {
+            || this.form.machines.length === 0
+            || this.form.status === null) {
                 this.$vs.notify({
                     title:'Save Schedule',
                     text:'Please fill up all the form before saving the schedule',
@@ -659,11 +700,9 @@ export default {
         scheduleInformation(data, time) {
             this.show_info = true
             this.show_information = JSON.parse(JSON.stringify(data))
-            
-            this.show_information.schedules = this.show_information.schedules.find(schedule => (moment('8:00:00', 'h:m a').add(time, 'hours').diff(moment(schedule.time_from, 'h:m a')) >= 0 && moment(schedule.time_to, 'h:m a').diff(moment('8:00:00', 'h:m a').add(time, 'hours')) >= 0))
 
-            this.show_information.schedules['assigned_doctors'] = this.show_information.schedules.personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'doctor'))
-            this.show_information.schedules['assigned_nurses'] = this.show_information.schedules.personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'nurse'))
+            this.show_information['assigned_doctors'] = this.show_information.personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'doctor'))
+            this.show_information['assigned_nurses'] = this.show_information.personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'nurse'))
 
             $('#showInformation').modal('show')
         },
@@ -677,14 +716,15 @@ export default {
             .catch(error => console.log(error))
             
             this.form_edit = {...this.form_edit, 
-            date: data.schedules.date,
-            time_from: moment(data.schedules.time_from, 'h:m a').format('LT'),
-            time_to: moment(data.schedules.time_to, 'h:m a').format('LT'),
-            patient: data.schedules.patients,
-            procedure: data.schedules.procedure,
+            date: data.date,
+            time_from: moment(data.time_from, 'h:m a').format('LT'),
+            time_to: moment(data.time_to, 'h:m a').format('LT'),
+            patient: data.patients,
+            procedure: data.procedure,
+            status: data.status
             }
 
-            this.patient = data.schedules.patients.fullname
+            this.patient = data.patients.fullname
                 
             this.fetchAvailablePersonnelsAndMachines()
 
@@ -693,15 +733,15 @@ export default {
                 var nurses = []
                 var machines = []
                 
-                data.schedules.assigned_doctors.forEach(doctor => {
+                data.assigned_doctors.forEach(doctor => {
                     doctors.push(this.doctors.find(doc => (doc.id === doctor.id)))
                 })
 
-                data.schedules.assigned_nurses.forEach(nurse => {
+                data.assigned_nurses.forEach(nurse => {
                     nurses.push(this.nurses.find(nurs => (nurs.id === nurse.id)))
                 })
 
-                data.schedules.machines.forEach(machine => {
+                data.machines.forEach(machine => {
                     machines.push(this.machines.find(mac => (mac.id === machine.id)))
                 })
 
@@ -731,7 +771,8 @@ export default {
             || this.form_edit.procedure === null
             || this.form_edit.doctors.length === 0
             || this.form_edit.nurses.length === 0
-            || this.form_edit.machines.length === 0) {
+            || this.form_edit.machines.length === 0
+            || this.form_edit.status === null) {
                 this.$vs.notify({
                     title:'Edit Schedule',
                     text:'Please fill up all the form before saving the schedule',
@@ -746,7 +787,7 @@ export default {
                         color:'danger'
                     })
                 } else {
-                    this.$http.put(`api/schedules/${this.show_information.schedules.id}`, this.form_edit)
+                    this.$http.put(`api/schedules/${this.show_information.id}`, this.form_edit)
                     .then(response => {
                         this.$vs.notify({
                             title:'Edit Schedule',
@@ -807,7 +848,7 @@ export default {
             })
         },
         async editingSchedule() {
-            var response = await this.$http.put(`api/schedules/editing-schedule/${this.show_information.schedules.id}`, {
+            var response = await this.$http.put(`api/schedules/editing-schedule/${this.show_information.id}`, {
                 editing: this.edit_schedule
             })
 
@@ -869,10 +910,16 @@ export default {
         }
     }
 
+    ul {
+        li {
+            list-style-type: none;
+        }
+    }
+
     table tbody {
         ul {
             li {
-                display: list-item;
+                text-align: justify;
             }
         }
     }
@@ -881,8 +928,12 @@ export default {
         text-align: center;
     }
 
-    // table tbody tr td {
-    //     text-align: center;
-    //     align-items: center;
-    // }
+    table tbody tr td {
+        width: 150px;
+    }
+
+    .color {
+        width: 10px;
+        height: 10px;
+    }
 </style>
