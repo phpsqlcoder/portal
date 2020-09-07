@@ -31,6 +31,8 @@ Route::prefix('personnels')->group(function() {
     Route::get('fetch-all-nurses', 'API\PersonnelController@fetchAllNurses');
     Route::post('fetch-available-personnels', 'API\PersonnelController@fetchAvailablePersonnels');
     Route::post('fetch-personnels-that-has-schedule-by-date', 'API\PersonnelController@fetchPersonnelsThatHasScheduleByDate');
+    Route::put('update-status/{personnel}', 'API\PersonnelController@toggleStatus');
+    Route::put('update-data/{personnel}', 'API\PersonnelController@updateData');
 });
 
 Route::prefix('machines')->group(function() {

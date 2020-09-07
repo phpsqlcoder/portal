@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Repositories\PersonnelRepository;
 use App\Http\Requests\PersonnelRequest;
 use App\Http\Services\PersonnelService;
+use App\Personnel;
 
 class PersonnelController extends Controller
 {
@@ -113,6 +114,20 @@ class PersonnelController extends Controller
         $personnels = $this->personnel_repository->fetchPersonnelsThatHasScheduleByDate($request->all());
 
         return response()->json(compact('personnels'));
+    }
+
+    public function toggleStatus(Personnel $personnel)
+    {
+        $personnel = $this->personnel_repository->toggleStatus($personnel);
+
+        return response()->json(['message' => 'Personnel status updated successfully', 'personnel' => $personnel]);
+    }
+
+    public function updateData(Request $request, Personnel $personnel)
+    {
+        $updated = $this->personnel_repository->editData($request->all(), $personnel);
+
+        return response()->json(['message' => 'Personnel status updated successfully', 'personnel' => $personnel]);
     }
 
 }

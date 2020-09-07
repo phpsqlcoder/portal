@@ -105,4 +105,33 @@ class PersonnelRepository {
         }
        return $available_personnels;
     }
+
+    public function toggleStatus($personnel)
+    {
+        try {
+            $personnel->is_active = ($personnel->is_active == 'Active') ? 0 : 1;
+            $personnel->save();
+
+            return $personnel;
+        } catch (Exception $exception) {
+            DB::rollBack();
+
+            return $exception;
+        }
+    }
+
+    public function editData ($request, $personnel)
+    {
+        try {
+            return $personnel->update([
+                'name' => $request['name'],
+                'personnel_type' => $request['personnel_type'],
+                'is_active' => ($request['is_active'] == 'Active') ? 1 : 0
+            ]);
+        } catch (Exception $exception) {
+            DB::rollBack();
+
+            return $exception;
+        }
+    }
 }

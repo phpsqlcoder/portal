@@ -82,7 +82,7 @@
                                                                     schedule.status === 'On-going' ? 'on-going' : '',
                                                                     schedule.status === 'Done' ? 'done' : ''
                                                                     ]"
-                                                                    class="d-flex">
+                                                                    class="d-flex margin-top-bottom">
                                                                         <a class="text-primary information mr-1" @click="scheduleInformation(schedule, index)"><i class="fa fa-info-circle"></i></a>
                                                                         <label>{{schedule.patients.fullname}}</label>
                                                                     </li>
@@ -625,6 +625,12 @@ export default {
                     this.doctors = personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'doctor'))
                     this.nurses = personnels.filter(personnel => (personnel.personnel_type.toLowerCase() === 'nurse'))
                     this.machines = machines.data.machines
+
+                    this.form = {...this.form, 
+                            doctors: [],
+                            nurses: [],
+                            machines: []
+                        }
 
                     if(this.edit_schedule) {
                         this.form_edit = {...this.form_edit, 
