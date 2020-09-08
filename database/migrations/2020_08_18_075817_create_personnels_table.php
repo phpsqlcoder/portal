@@ -16,6 +16,7 @@ class CreatePersonnelsTable extends Migration
         Schema::create('personnels', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('image')->nullable();
             $table->string('personnel_type');
             $table->integer('biometric_id');
             $table->boolean('is_active')->default(1);;

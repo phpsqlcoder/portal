@@ -15,7 +15,9 @@ class PersonnelRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'personnel_type' => 'required'
+            'image' => 'sometimes',
+            'personnel_type' => 'required',
+            'is_active' => 'required',
         ];
     }
 }

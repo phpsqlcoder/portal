@@ -37,7 +37,7 @@
                         </div>
                         <div v-for="personnel in filteredPersonnels" :key="personnel.id" class="col-sm-6 col-md-3 mt-1">
                             <div class="thumbnail">
-                                <img src="images/profile.png" alt="#">
+                                <img :src="personnel.image" alt="#">
                                 <div class="caption">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h3 :class="(personnel.is_active === 'Active') ? 'bg-success' : 'bg-danger'">
@@ -59,13 +59,24 @@
       <template>
             <div class="modal fade" id="addPersonnel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
-                    <form @submit.prevent="submitPersonnel">
+                    <form @submit.prevent="submitPersonnel" enctype="multipart/form-data">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                             </div>
                             <div class="modal-body">
+                                <div class="form-group row">
+                                    <div class="col-md-12 d-flex justify-content-center">
+                                        <img :src="temporary_image" alt="Temp" style="width: 200px; height: 200px;">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3">Profile</label>
+                                    <div class="col-md-9">
+                                        <input type="file" id="img" name="img" class="form-control" accept="image/*" required @change="changedImage">
+                                    </div>
+                                </div>
                                 <div class="form-group row">
                                     <label class="col-md-3">Name</label>
                                     <div class="col-md-9">
@@ -83,6 +94,16 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3">Status</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" v-model="form.is_active" required>
+                                            <option value="" disabled selected>Select Status</option>
+                                            <option value="Active">Active</option>
+                                            <option value="Inactive">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -97,13 +118,24 @@
       <template>
             <div class="modal fade" id="EditPersonnel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
-                    <form @submit.prevent="submitEditedPersonnel">
+                    <form @submit.prevent="submitEditedPersonnel" enctype="multipart/form-data">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title" id="myModalLabel">Modal title</h4>
                             </div>
                             <div class="modal-body">
+                                <div class="form-group row">
+                                    <div class="col-md-12 d-flex justify-content-center">
+                                        <img :src="temporary_image" alt="Temp" style="width: 200px; height: 200px;">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3">Profile</label>
+                                    <div class="col-md-9">
+                                        <input type="file" id="img" name="img" class="form-control" accept="image/*" @change="changedImage">
+                                    </div>
+                                </div>
                                 <div class="form-group row">
                                     <label class="col-md-3">Name</label>
                                     <div class="col-md-9">
@@ -192,16 +224,22 @@ export default {
             personnels: [],
             personnel: {},
             form: {
-                name: null,
-                personnel_type: ''
-            },
-            edit_personnel: {
+                image: '',
                 name: null,
                 personnel_type: '',
                 is_active: '',
             },
+            edit_personnel: {
+                image: '',
+                name: null,
+                personnel_type: '',
+                is_active: '',
+            },
+            editing: false,
             filter_by_type: 'All',
             filter_by_name: '',
+            temporary_image: 'images/profile.png',
+            uploaded_image: undefined
         }
     },
     mounted() {
@@ -215,7 +253,13 @@ export default {
             .catch(error => console.log(error))
         },
         submitPersonnel() {
-            this.$http.post('api/personnels/', this.form)
+            var formData = new FormData()
+            formData.append('image', this.uploaded_image)
+            formData.append('name', this.form.name)
+            formData.append('personnel_type', this.form.personnel_type)
+            formData.append('is_active', this.form.is_active)
+
+            this.$http.post('api/personnels/', formData)
             .then(response => {
                 this.fetchPersonnels()
                 this.form = {...this.form, name: null, personnel_type: ''}
@@ -240,10 +284,18 @@ export default {
         },
         editPersonnel(personnel) {
             this.edit_personnel = {...this.edit_personnel, name: personnel.name, personnel_type: personnel.personnel_type, is_active: personnel.is_active}
+            this.temporary_image = personnel.image
+            this.editing = true
             $("#EditPersonnel").modal('show')
         },
         submitEditedPersonnel() {
-            this.$http.put(`api/personnels/update-data/${this.personnel.id}`, this.edit_personnel)
+            var formData = new FormData()
+            formData.append('image', this.uploaded_image)
+            formData.append('name', this.edit_personnel.name)
+            formData.append('personnel_type', this.edit_personnel.personnel_type)
+            formData.append('is_active', this.edit_personnel.is_active)
+
+            this.$http.post(`api/personnels/update-data/${this.personnel.id}`, formData)
             .then(response => {
                 this.fetchPersonnels()
                 this.$vs.notify({
@@ -251,8 +303,15 @@ export default {
                     text: `${response.data.message}`,
                     color:'success'
                 })
+                this.editing = false
             })
             .catch(error => console.log(error))
+        },
+        changedImage(e) {
+            var image = e.target.files[0]
+            var new_image = URL.createObjectURL(image)
+            this.temporary_image = new_image
+            this.uploaded_image = image
         }
     },
     computed: {
