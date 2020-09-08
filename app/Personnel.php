@@ -13,6 +13,11 @@ class Personnel extends Model
         return ($status == 1) ? 'Active' : 'Inactive';
     }
 
+    public function getImageAttribute($image)
+    {
+        return ($image == null) ? 'images/profile.png' : "/storage/$image"; 
+    }
+
     public function schedules()
     {
         return $this->belongsToMany('App\Schedule');

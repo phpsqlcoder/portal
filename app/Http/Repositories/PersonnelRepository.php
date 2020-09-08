@@ -34,6 +34,18 @@ class PersonnelRepository {
         }
     }
 
+    public function updateImage($personnel, $image)
+    {
+        try {
+            return $personnel->update([
+                'image' => $image->store('profiles', 'public')
+            ]);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return $exception;
+        }
+    }
+
     public function fetchPersonnel($personnel)
     {
         return $this->personnel->whereId($personnel['id'])->first();
@@ -74,38 +86,6 @@ class PersonnelRepository {
         }])->get();
     }
 
-    public function fetchAvailablePersonnels($date)
-    {
-        $time_from = strtotime($date['time_from']);
-        $time_to = strtotime($date['time_to']);
-
-        $personnels = $this->ScheduleByDate($date);
-
-        $available_personnels = array();
-        
-        foreach ($personnels as $key => $personnel) {
-            $personnel_is_available = true;
-            foreach ($personnel['schedules'] as $schedule) {
-                $from = strtotime($schedule['time_from']);
-                $to = strtotime($schedule['time_to']);
-
-                if($time_from >= $from && $time_from < $to) {
-                    $personnel_is_available = false;
-                    break;
-                } else {
-                    if($time_to > $from && $time_from < $from) {
-                        $personnel_is_available = false;
-                        break;
-                    }
-                }
-            }
-            if($personnel_is_available) {
-                array_push($available_personnels, $personnel);
-            }
-        }
-       return $available_personnels;
-    }
-
     public function toggleStatus($personnel)
     {
         try {
@@ -120,7 +100,7 @@ class PersonnelRepository {
         }
     }
 
-    public function editData ($request, $personnel)
+    public function updateData ($request, $personnel)
     {
         try {
             return $personnel->update([

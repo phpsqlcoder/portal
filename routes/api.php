@@ -18,36 +18,42 @@ use Illuminate\Http\Request;
 // });
 
 
-Route::resource('patients', 'API\PatientController');
-Route::resource('patient-medical-information', 'API\PatientMedicalInformationController');
 
-Route::post('search-patient', 'API\PatientController@searchPatient');
 
-Route::prefix('personnels')->group(function() {
-    Route::get('/', 'API\PersonnelController@index');
-    Route::post('/', 'API\PersonnelController@store');
-    Route::get('fetch-personnels-that-has-schedule', 'API\PersonnelController@fetchPersonnelsThatHasSchedule');
-    Route::get('fetch-all-doctors', 'API\PersonnelController@fetchAllDoctors');
-    Route::get('fetch-all-nurses', 'API\PersonnelController@fetchAllNurses');
-    Route::post('fetch-available-personnels', 'API\PersonnelController@fetchAvailablePersonnels');
-    Route::post('fetch-personnels-that-has-schedule-by-date', 'API\PersonnelController@fetchPersonnelsThatHasScheduleByDate');
-    Route::put('update-status/{personnel}', 'API\PersonnelController@toggleStatus');
-    Route::put('update-data/{personnel}', 'API\PersonnelController@updateData');
+Route::group(['namespace' => 'API'], function () {
+    Route::resource('patients', 'PatientController');
+    Route::resource('patient-medical-information', 'PatientMedicalInformationController');
+    Route::post('search-patient', 'PatientController@searchPatient');
+
+    Route::group(['prefix' => 'personnels'], function () {
+        Route::get('/', 'PersonnelController@index');
+        Route::post('/', 'PersonnelController@store');
+        Route::get('fetch-personnels-that-has-schedule', 'PersonnelController@fetchPersonnelsThatHasSchedule');
+        Route::get('fetch-all-doctors', 'PersonnelController@fetchAllDoctors');
+        Route::get('fetch-all-nurses', 'PersonnelController@fetchAllNurses');
+        Route::post('fetch-available-personnels', 'PersonnelController@fetchAvailablePersonnels');
+        Route::post('fetch-personnels-that-has-schedule-by-date', 'PersonnelController@fetchPersonnelsThatHasScheduleByDate');
+        Route::put('update-status/{personnel}', 'PersonnelController@toggleStatus');
+        Route::post('update-data/{personnel}', 'PersonnelController@updateData');
+    });
+
+    Route::group(['prefix' => 'machines'], function () {
+        Route::get('/', 'MachineController@index');
+        Route::post('/', 'MachineController@store');
+        Route::post('fetch-available-machines', 'MachineController@fetchAvailableMachines');
+        Route::get('fetch-machines-that-has-schedule', 'MachineController@fetchMachinesThatHasSchedule');
+        Route::post('fetch-machines-that-has-schedule-by-date', 'MachineController@fetchMachinesThatHasScheduleByDate');
+    });
+
+    Route::group(['prefix' => 'schedules'], function () {
+        Route::post('create-new-schedule', 'ScheduleController@store');
+        Route::put('/{id}', 'ScheduleController@update');
+        Route::put('cancel-schedule/{id}', 'ScheduleController@cancelSchedule');
+        Route::get('fetch-today-schedule', 'ScheduleController@fetchTodaySchedule');
+        Route::put('editing-schedule/{id}', 'ScheduleController@editingSchedule');
+        Route::post('disable-editing', 'ScheduleCOntroller@disableEditing');
+    });
 });
 
-Route::prefix('machines')->group(function() {
-    Route::get('/', 'API\MachineController@index');
-    Route::post('/', 'API\MachineController@store');
-    Route::post('fetch-available-machines', 'API\MachineController@fetchAvailableMachines');
-    Route::get('fetch-machines-that-has-schedule', 'API\MachineController@fetchMachinesThatHasSchedule');
-    Route::post('fetch-machines-that-has-schedule-by-date', 'API\MachineController@fetchMachinesThatHasScheduleByDate');
-});
 
-Route::prefix('schedules')->group(function() {
-    Route::post('create-new-schedule', 'API\ScheduleController@store');
-    Route::put('/{id}', 'API\ScheduleController@update');
-    Route::put('cancel-schedule/{id}', 'API\ScheduleController@cancelSchedule');
-    Route::get('fetch-today-schedule', 'API\ScheduleController@fetchTodaySchedule');
-    Route::put('editing-schedule/{id}', 'API\ScheduleController@editingSchedule');
-    Route::post('disable-editing', 'API\ScheduleCOntroller@disableEditing');
-});
+

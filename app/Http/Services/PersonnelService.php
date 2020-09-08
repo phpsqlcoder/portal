@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use App\Http\Repositories\PersonnelRepository;
+use Illuminate\Support\Facades\Storage;
 
 class PersonnelService {
     private $personnel_repository;
@@ -42,5 +43,29 @@ class PersonnelService {
             }
         }
        return $available_personnels;
+    }
+
+    public function store($parameters)
+    {
+        $personnel = $this->personnel_repository->store($parameters);
+        
+        $this->storeImage($parameters, $personnel);
+
+        return $personnel;
+    }
+
+    public function updateData($parameters, $personnel)
+    {
+        $this->personnel_repository->updateData($parameters, $personnel);
+        return $this->storeImage($parameters, $personnel);
+    }
+
+    public function storeImage($parameters, $personnel)
+    {
+        if(is_uploaded_file($parameters['image'])) {
+            return $personnel->update([
+                'image' => $parameters['image']->store('profiles', 'public')
+            ]);
+        }
     }
 }

@@ -127,7 +127,7 @@
                                                                     schedule.status === 'On-going' ? 'on-going' : '',
                                                                     schedule.status === 'Done' ? 'done' : ''
                                                                     ]"
-                                                                    class="d-flex">
+                                                                    class="d-flex margin-top-bottom">
                                                                     <a class="text-primary information mr-1" @click="scheduleInformation(schedule, index)"><i class="fa fa-info-circle"></i></a>
                                                                     {{schedule.patients.fullname}}
                                                                     </li>

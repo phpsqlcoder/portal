@@ -39,11 +39,12 @@ class PersonnelController extends Controller
      */
     public function store(PersonnelRequest $request)
     {
-        $this->personnel_repository->store($request->validated());
+        $result = $this->personnel_service->store($request->validated());
 
         return response()->json([
             'success' => true,
-            'message' => 'Personnel saved successfully'
+            'message' => 'Personnel saved successfully',
+            'result' => $result
         ]);
     }
 
@@ -123,9 +124,11 @@ class PersonnelController extends Controller
         return response()->json(['message' => 'Personnel status updated successfully', 'personnel' => $personnel]);
     }
 
-    public function updateData(Request $request, Personnel $personnel)
+    public function updateData(PersonnelRequest $request, Personnel $personnel)
     {
-        $updated = $this->personnel_repository->editData($request->all(), $personnel);
+        // dd($request->all());
+        // $updated = $this->personnel_repository->editData($request->all(), $personnel);
+        $this->personnel_service->updateData($request->all(), $personnel);
 
         return response()->json(['message' => 'Personnel status updated successfully', 'personnel' => $personnel]);
     }
